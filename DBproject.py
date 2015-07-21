@@ -11,11 +11,11 @@ def exit_loop(key):
 		raise urwid.ExitMainLoop()
 
 def main():
-	text_header = (u"Welcome to our CS419 project! q or Q exits the program.")
+	text_header = (u" Welcome to our CS419 project! q or Q exits the program.")
 	text_leftcol1 = (u"Top of left column")
 	text_leftcol2 = (u"This is the body of the left column")
 	text_maintop = (u"This is the top section of the main body")
-	text_mainbody = (u"This is the main body section")
+	text_mainbody = (u" This is the main body section")
 	text_instructions = (u"This is an area that holds instructions")
 	
 	blank = urwid.Divider()
@@ -34,11 +34,26 @@ def main():
 				, 'leftside')
 			),
 			urwid.AttrWrap( urwid.Padding( urwid.Pile([
-						urwid.Text(text_maintop),
-						urwid.Divider("-"),
-						urwid.Text(text_mainbody)
+						urwid.AttrWrap( urwid.Text(text_maintop), 'topmenu'),
+						urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+						blank,
+						urwid.Text(text_mainbody),
+						urwid.Text(u" It can keep going down"),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
+						urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ...")
 					])
-				, left=1, right=1)
+				, left=0, right=1)
 			, 'body')
 		])
 	]
@@ -48,10 +63,11 @@ def main():
 	frame = urwid.Frame(urwid.AttrWrap(listbox, 'bg'), header=frame_header)
 
 	palette = [
-	    ('header', 'white', 'dark red'),
-	    ('body', 'light gray', 'dark blue'),
-	    ('leftside', 'black', 'light gray'),
-	    ('bg', 'light gray', 'dark magenta')
+	    ('header', 'light gray', 'dark red'),
+	    ('topmenu', 'light gray', 'dark blue'),
+	    ('leftside', 'black', 'dark cyan'),
+	    ('body', '', 'black'),
+	    ('bg', 'black', 'light gray')
 	]
 
 	loop = urwid.MainLoop(frame, palette, unhandled_input=exit_loop, screen=urwid.curses_display.Screen())
