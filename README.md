@@ -1,6 +1,4 @@
-# FinalProject
+CS419 Software Projects
+Group 3 (David Adams, Adam Pedigo)
 
-# Just checking that I can push commits -Adam
-
-# Checking if I can make commits - David
-# Checking again
+Ncurses Based Database Frontend
