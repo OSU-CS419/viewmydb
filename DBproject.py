@@ -29,7 +29,7 @@ def main():
   text_leftcol2_5 = (u"Table 4")
   text_leftcol2_6 = (u"Table 5")
   text_leftcol2_7 = (u"Table 6")
-  text_maintop = (u"This is the top section of the main body")
+  text_maintop = (u" This is the top section of the main body")
   text_mainbody = (u" This is the main body section")
   text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool.")
   
@@ -38,8 +38,15 @@ def main():
 
   #Signal handler for the left side buttons
   def leftcol_btn_press(button):
-      frame.footer = urwid.AttrWrap(urwid.Text(
-          [u" Pressed: ", button.get_label()]), 'header')
+    frame.footer = urwid.AttrWrap(urwid.Text(
+      [u" Pressed: ", button.get_label()]), 'header')
+    selected.set_text([u" Selected Entity: ", button.get_label()])
+
+  #Signal Handler for the Run SQL button
+  def run_sql(button):
+    frame.footer = urwid.AttrWrap(urwid.Text(
+        [u" Pressed: ", button.get_label()]), 'header')
+
 
   #creating left column widget
   left_column = urwid.AttrWrap( urwid.Padding (urwid.Pile([
@@ -60,14 +67,28 @@ def main():
       , left=1, right=2)
     , 'leftside')
 
+  #Creating the widget that holds the top bar information
+  selected = urwid.Text(u" Selected Entity:")
+  top_bar = urwid.Columns([
+      urwid.AttrWrap( selected, 'topmenu'),
+      ('fixed', 15, urwid.AttrWrap( urwid.Padding( urwid.Button(
+            u"Run SQL", run_sql), 
+          right=4), 
+        'btnf', 'btn'))
+    ])
+
 
   listbox_content = [
     blank,
     urwid.Padding(urwid.Text(text_instructions), left=2, right=2),
     blank,
+    urwid.AttrWrap( urwid.Divider(), 'topmenu'),
+    top_bar,
+    urwid.AttrWrap( urwid.Divider(), 'topmenu'),
     urwid.Columns([
       ('fixed', 17, left_column),
       urwid.AttrWrap( urwid.Padding( urwid.Pile([
+            urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
             urwid.AttrWrap( urwid.Text(text_maintop), 'topmenu'),
             urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
             blank,
@@ -87,13 +108,14 @@ def main():
             urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ..."),
             urwid.Text(u" ... ... ... ... ... ... ... ... ... ... ...")
           ])
-        , left=0, right=1)
+        , left=0, right=0)
       , 'body')
     ])
   ]
 
   frame_header = urwid.AttrWrap(urwid.Text(text_header), 'header')
   listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
+  listbox.set_focus(6)
   frame = urwid.Frame(urwid.AttrWrap(listbox, 'bg'), header=frame_header)
 
   palette = [
@@ -103,7 +125,8 @@ def main():
       ('body', 'black', 'light gray'),
       ('bg', 'black', 'light gray'),
       ('btn','light gray','dark cyan'),
-      ('btnf','light gray','dark blue')
+      ('btnf','light gray','dark blue'),
+      ('selected', 'light gray', 'dark red')
   ]
 
   loop = urwid.MainLoop(frame, palette, unhandled_input=exit_loop, screen=urwid.curses_display.Screen())
