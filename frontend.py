@@ -2,6 +2,8 @@
 
 import urwid
 
+import pprint
+
 """
 NOTES
 -----
@@ -121,6 +123,31 @@ text_maintop = u" This is the top section of the main body"
 text_mainbody_1 = urwid.Text(u"First, please use the below radio buttons to select either a MySQL or PostgreSQL database to connect to.")
 text_mainbody_2 = urwid.Text(u"Now, please enter in the database name and password below in order to connect to the database.")
 
+#signal handler for 
+def db_connect(button):
+  frame.footer = urwid.AttrWrap(urwid.Text(
+    [u" Pressed: ", button.get_label()]), 'header')
+  print vars(main_body)
+  #main_body.original_widget = urwid.Text(u"Testing")
+  main_body = urwid.Text(u"Testing")
+  print vars(main_body)
+
+
+#signal handler for radio buttons
+def radio_change():
+  test1 = 2
+
+#signal handler for text input
+
+
+
+
+# def leftcol_btn_press(button):
+#   frame.footer = urwid.AttrWrap(urwid.Text(
+#     [u" Pressed: ", button.get_label()]), 'header')
+#   selected.set_text([u" Selected Entity: ", button.get_label()])
+
+
 #setting up radio elements for MySQL or PostgreSQL choice
 radio_list = []
 mysql_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"MySQL"), 'main_sel', 'main_self')
@@ -131,7 +158,7 @@ db_name_edit = urwid.AttrWrap( urwid.Edit(u"Database name: ", ""), 'main_sel', '
 db_pw_edit = urwid.AttrWrap( urwid.Edit(u"Database password: ", ""), 'main_sel', 'main_self')
 
 #connect button
-db_connect_btn = urwid.AttrWrap( urwid.Button(u"Connect", leftcol_btn_press), 'main_sel', 'main_self')
+db_connect_btn = urwid.AttrWrap( urwid.Button(u"Connect", db_connect), 'main_sel', 'main_self')
 
 #This is the pile widget that holds all of the main body widgets
 main_body = urwid.Padding( 
@@ -143,13 +170,8 @@ main_body = urwid.Padding(
     blank,
     urwid.Padding( urwid.Pile([db_name_edit, db_pw_edit]), left=5, width=45),
     blank,
-    urwid.Padding( db_connect_btn, left=5, width=11)
+    urwid.Padding(db_connect_btn, left=5, width=11)
   ]), left=1, right=2)
-
-#signal handler for 
-
-
-
 #END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
