@@ -18,23 +18,8 @@ This file aims to organize that better
 
 """
 
-#This is a list of variables that are used to hold text for the UI
-text_header = (u" Welcome to our CS419 project! q or Q exits the program.")
+#Instruction text
 text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool.")
-text_leftcol1_1 = (u"Database:")
-db_name = (u"Test DB")
-text_leftcol2_1 = (u"Tables:")
-
-text_leftcol2_2 = (u"Table 1")
-text_leftcol2_3 = (u"Table 2")
-text_leftcol2_4 = (u"Table 3")
-text_leftcol2_5 = (u"Table 4")
-text_leftcol2_6 = (u"Table 5")
-text_leftcol2_7 = (u"Table 6")
-
-text_maintop = (u" This is the top section of the main body")
-text_mainbody = (u" This is the main body section")
-
 
 #This is the color palette for the UI
 palette = [
@@ -45,6 +30,8 @@ palette = [
   ('bg', 'black', 'light gray'),
   ('btn','light gray','dark cyan'),
   ('btnf','light gray','dark blue'),
+  ('main_sel', 'black', 'light gray'),
+  ('main_self', 'light gray', 'black'),
   ('selected', 'light gray', 'dark red')
 ]
 
@@ -69,11 +56,22 @@ top_bar = urwid.Columns([
       right=4), 
     'btnf', 'btn'))
 ])
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #--------------------------------------------------------------------
 #This creates the left column widget
+text_leftcol1_1 = (u"Database:")
+text_leftcol2_1 = (u"Tables:")
+
+db_name = (u"")
+
+text_leftcol2_2 = (u"")
+text_leftcol2_3 = (u"")
+text_leftcol2_4 = (u"")
+text_leftcol2_5 = (u"")
+text_leftcol2_6 = (u"")
+text_leftcol2_7 = (u"")
 
 #signal handler for left column widget buttons
 def leftcol_btn_press(button):
@@ -81,7 +79,12 @@ def leftcol_btn_press(button):
     [u" Pressed: ", button.get_label()]), 'header')
   selected.set_text([u" Selected Entity: ", button.get_label()])
 
-#creating variable for database button
+#Function to build the DB button based off of DB name given
+def build_db_btn(db_name):
+  db_button = urwid.AttrWrap( urwid.Button(db_name, leftcol_btn_press), 'btn', 'btnf')
+  return db_button
+
+#creating variable for database button widget
 db_button = urwid.AttrWrap( urwid.Button(db_name, leftcol_btn_press), 'btn', 'btnf')
 
 #left column widget variable build
@@ -104,7 +107,50 @@ left_column = urwid.AttrWrap( urwid.Padding (urwid.Pile([
       ])
     , left=1, right=2)
   , 'leftside')
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#--------------------------------------------------------------------
+#This will be the tool bar top widget of the main body
+text_maintop = u" This is the top section of the main body"
+#END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#--------------------------------------------------------------------
+#This will be the main body widget
+text_mainbody_1 = urwid.Text(u"First, please use the below radio buttons to select either a MySQL or PostgreSQL database to connect to.")
+text_mainbody_2 = urwid.Text(u"Now, please enter in the database name and password below in order to connect to the database.")
+
+#setting up radio elements for MySQL or PostgreSQL choice
+radio_list = []
+mysql_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"MySQL"), 'main_sel', 'main_self')
+psql_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"PostgreSQL"), 'main_sel', 'main_self')
+
+#setting up the edit input widgets for database name and password
+db_name_edit = urwid.AttrWrap( urwid.Edit(u"Database name: ", ""), 'main_sel', 'main_self')
+db_pw_edit = urwid.AttrWrap( urwid.Edit(u"Database password: ", ""), 'main_sel', 'main_self')
+
+#connect button
+db_connect_btn = urwid.AttrWrap( urwid.Button(u"Connect", leftcol_btn_press), 'main_sel', 'main_self')
+
+#This is the pile widget that holds all of the main body widgets
+main_body = urwid.Padding( 
+  urwid.Pile([text_mainbody_1,
+    blank, 
+    urwid.Padding( urwid.Pile([mysql_radio, psql_radio]), width=14, left=5),
+    blank,
+    text_mainbody_2,
+    blank,
+    urwid.Padding( urwid.Pile([db_name_edit, db_pw_edit]), left=5, width=45),
+    blank,
+    urwid.Padding( db_connect_btn, left=5, width=11)
+  ]), left=1, right=2)
+
+#signal handler for 
+
+
+
+#END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #--------------------------------------------------------------------
@@ -132,19 +178,19 @@ listbox_content = [
           urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
           blank,
           #main body
-          urwid.Text(text_mainbody),
-          urwid.Text(u" It can keep going down"),
+          main_body
         ])
       , left=0, right=0)
     , 'body')
   ])
 ]
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #--------------------------------------------------------------------
 #Creating the frame widget with header and body
 #The frame is the most top level widget that is passed to the MainLoop()
+text_header = (u" Welcome to our CS419 project! q or Q exits the program.")
 
 #this is the widget for the frame header
 frame_header = urwid.AttrWrap(urwid.Text(text_header), 'header')
@@ -157,7 +203,7 @@ listbox.set_focus(6)
 
 #Creating the frame widget
 frame = urwid.Frame(urwid.AttrWrap(listbox, 'bg'), header=frame_header)
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
