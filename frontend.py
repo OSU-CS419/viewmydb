@@ -2,8 +2,6 @@
 
 import urwid
 
-import pprint
-
 """
 NOTES
 -----
@@ -127,10 +125,11 @@ text_mainbody_2 = urwid.Text(u"Now, please enter in the database name and passwo
 def db_connect(button):
   frame.footer = urwid.AttrWrap(urwid.Text(
     [u" Pressed: ", button.get_label()]), 'header')
-  print vars(main_body)
+  #print vars(main_body)
   #main_body.original_widget = urwid.Text(u"Testing")
-  main_body = urwid.Text(u"Testing")
-  print vars(main_body)
+  #main_body = urwid.Text(u"Testing")
+  #print vars(main_body)
+  #frame.body = urwid.Filler( urwid.Text(u"Testing"))
 
 
 #signal handler for radio buttons
