@@ -41,7 +41,7 @@ def gettables(cur):
     cur.execute("""SELECT table_name FROM information_schema.tables 
     WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name;""")
     data = cur.fetchall()
-    print data
+    #print data
     names = []
     for table in data:
       names.append(table[0])
@@ -62,23 +62,4 @@ def allrows(cur, name):
     return rows
   except:
     return -1
-
-# ------------------------------------------------
-# tests
-# ------------------------------------------------
-
-#connectdb w/ dbname, username, pass
-cur = connectdb("postgres", "postgres", "cs419db")
-if cur == -1:
-  print "error connecting; please check dbname, username, password"
-else:
-  print "successfully connected"
-
-  # get all table names
-  tablenames = gettables(cur)
-  print tablenames
-
-  # get all table rows
-  rows = allrows(cur, tablenames[0])
-  print rows
 
