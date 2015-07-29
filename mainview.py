@@ -10,14 +10,14 @@ NOTES
 These are the possible colors we can use:
 black, dark red, dark green, brown, dark blue, dark magenta, dark cyan, light gray
 
-code for main view setup
+This is the code that sets up and displays the main dashboard view for the program
 
 """
 
-blank = urwid.Divider()
-
 
 def show_main_view(frame, body, user_info):
+  blank = urwid.Divider()
+
   text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool.")
 
   #--------------------------------------------------------------------

@@ -11,11 +11,14 @@ NOTES
 These are the possible colors we can use:
 black, dark red, dark green, brown, dark blue, dark magenta, dark cyan, light gray
 
-code for login view
+This is the code to create and run the login view for the program.
+If a log in is successful, then the code here will initialize the code that will
+create the main view for the program, with a connected DB.
 
 """
 
-
+#This class is used to store all of the data pertaining to the database connection
+#It is used in a similar manner to a C struct
 class UserDBInfo:
   def __init__(self):
     self.db_uname = ""
@@ -24,17 +27,16 @@ class UserDBInfo:
     self.psql = False
     self.mysql = False
 
-
-#global variables
-blank = urwid.Divider()
-user_info = UserDBInfo()
-
 def create_main_view():
+  #used to easily insert a blank line widget
+  blank = urwid.Divider()
 
-  #signal handler for 
+  #create a variable to hold all of the DB info
+  user_info = UserDBInfo()
+
+  #signal handler for the connect button
   def db_connect(button):
     #ADD LATER: check DB connection and show error if not working
-    #Call a DB connect function here
     #if error, let user enter in data again and show error
     user_info.db_conn = backend.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
@@ -44,8 +46,9 @@ def create_main_view():
     #show connect button being pressed in frame footer
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
-    
-  #signal handler for radio buttons
+
+
+  #signal handler for radio buttons, stores input information from user
   def radio_change(self, state):
     if self.label == "MySQL":
       if state == True:
@@ -56,7 +59,8 @@ def create_main_view():
         user_info.psql = True
         user_info.mysql = False
 
-  #signal handler for text input
+
+  #signal handler for text input, stores input information from user
   def edit_change_event(self, text):
     if self.caption == u"Database name: ":
       user_info.db_name = text
@@ -65,9 +69,7 @@ def create_main_view():
     elif self.caption == u"Username: ":
       user_info.db_uname = text
 
-
-
-  #setup of login view
+  #variables to hold text to show user for login view
   text_mainbody_1 = urwid.Text(u"First, please use the below radio buttons to select either a MySQL or PostgreSQL database to connect to.")
   text_mainbody_2 = urwid.Text(u"Now, please enter in the database name and password below in order to connect to the database.")  
 
@@ -94,7 +96,8 @@ def create_main_view():
 
   #This is the pile widget that holds all of the main body widgets
   body = urwid.WidgetPlaceholder( urwid.Filler( urwid.Padding(      
-      urwid.Pile([text_mainbody_1,
+      urwid.Pile([
+        text_mainbody_1,
         blank, 
         urwid.Padding( urwid.Pile([mysql_radio, psql_radio]), width=14, left=5),
         blank,
@@ -106,6 +109,7 @@ def create_main_view():
       ]), left=5, right=5),
     valign='top', top=3))
   
+  #adding color styling to the body widget
   body = urwid.AttrWrap(body, 'bg')
 
   #Setting up frame
@@ -113,5 +117,5 @@ def create_main_view():
   frame_header = urwid.AttrWrap(frame_header, 'header')
   frame = urwid.Frame(body=body, header=frame_header)
 
+  #return the frame all set up with body widget
   return frame
-
