@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 import urwid
-import backend
+import psqlDB
 import mainview
 
+#will also import mysqlDB once we factor in the dual DB structure b/w mysql/psql
 
 """
 NOTES
@@ -38,7 +39,7 @@ def create_main_view():
   def db_connect(button):
     #ADD LATER: check DB connection and show error if not working
     #if error, let user enter in data again and show error
-    user_info.db_conn = backend.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
+    user_info.db_conn = psqlDB.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
     #build out and show the main app view on the screen
     mainview.show_main_view(frame, body, user_info)

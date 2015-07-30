@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import urwid
-import backend
+import psqlDB
 
 
 """
@@ -55,7 +55,7 @@ def show_main_view(frame, body, user_info):
   db_name = user_info.db_name
 
   #store the table names
-  db_tables = backend.gettables(user_info.db_conn)
+  db_tables = psqlDB.gettables(user_info.db_conn)
 
   #create the table button widgets
   table_buttons = urwid.Pile(
