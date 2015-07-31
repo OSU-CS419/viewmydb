@@ -81,18 +81,26 @@ def second_createtable(main_body, user_info, table_info):
 
   #edit_attribute = 
 
+  #when this renders, you will be able to scroll down, but there's no way
+  #to see it...probably not a good way to do it
   listbox_content = [
     blank,
-    urwid.Padding(text_1, left=2)
-
-
+    urwid.Padding(text_1, left=2),
+    blank,
+    blank,
+    blank,
+    blank,
+    blank,
+    blank,
+    blank,
+    blank,
+    urwid.Padding(urwid.Text(u"Testing"), left=2)
   ]
 
   listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
   listbox = urwid.BoxAdapter(listbox, 5)
 
   main_body.original_widget = listbox
-
 
   
 
