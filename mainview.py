@@ -2,6 +2,9 @@
 
 import urwid
 import psqlDB
+import DBstructure
+import DBcreatetable
+
 
 
 """
@@ -18,7 +21,7 @@ This is the code that sets up and displays the main dashboard view for the progr
 def show_main_view(frame, body, user_info):
   blank = urwid.Divider()
 
-  text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool.")
+  text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool. Anything within < > brackets is a selectable button. If the tables do not look right, please make the console window wider.")
 
   #--------------------------------------------------------------------
   #This creates the widget for the top most bar
@@ -29,7 +32,7 @@ def show_main_view(frame, body, user_info):
       [u" Pressed: ", button.get_label()]), 'header')
 
   #Creating the widget that holds the top bar information
-  selected = urwid.Text(u" Selected Entity:")
+  selected = urwid.Text([u" Selected Entity: ", user_info.db_name])
   top_bar = urwid.Columns([
     urwid.AttrWrap( selected, 'topmenu'),
     ('fixed', 15, urwid.AttrWrap( urwid.Padding( urwid.Button(
@@ -82,13 +85,31 @@ def show_main_view(frame, body, user_info):
 
   #--------------------------------------------------------------------
   #This will be the tool bar top widget of the main body
+  def db_structure_btn_press(button):
+    #replace main body with structure data table
+    main_body.original_widget = DBstructure.show_db_structure(user_info)
+
+  def db_createtable_btn_press(button):
+    #create a table in the database, if error message, show error
+    main_body.original_widget = DBcreatetable.show_db_createtable()
+
   text_maintop = u" This is the top section of the main body"
+  db_structure_button = urwid.AttrWrap( urwid.Button(u"Structure", db_structure_btn_press), 'btnf', 'btn')
+  db_createtable_button = urwid.AttrWrap( urwid.Button(u"Create Table", db_createtable_btn_press), 'btnf', 'btn')
+
+  main_top = urwid.Padding( urwid.Columns([
+      ('fixed', 13, db_structure_button),
+      ('fixed', 3, urwid.Text(u"  ")),
+      ('fixed', 16, db_createtable_button)
+    ])
+  , left=2, right=2)
   #END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
   #--------------------------------------------------------------------
   #This will be the main body widget
-  main_body = urwid.Text(u"This is where the main body will be")
+  #default view upon first render of screen is database-show structure
+  main_body = DBstructure.show_db_structure(user_info)
   #END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -110,9 +131,9 @@ def show_main_view(frame, body, user_info):
       ('fixed', 17, left_column),
       #right column tool bar and main body
       urwid.AttrWrap( urwid.Padding( urwid.Pile([
-            urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
             #tool bar menu
-            urwid.AttrWrap( urwid.Text(text_maintop), 'topmenu'),
+            urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+            urwid.AttrWrap( main_top, 'topmenu'),
             urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
             blank,
             #main body
