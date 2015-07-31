@@ -102,5 +102,3 @@ def second_createtable(main_body, user_info, table_info):
 
   main_body.original_widget = listbox
 
-  
-

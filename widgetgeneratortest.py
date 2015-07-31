@@ -43,8 +43,10 @@ def unhandled_input(key):
 
 #Main function to start the program
 def main():
-  #test widget goes here
-  test_widget = DBcreatetable.show_db_createtable()
+  
+  #TEST WIDGET GOES HERE-----------------------------------
+  test_widget = DBcreatetable.show_db_createtable("test", "test")
+  test_widget = urwid.Filler(test_widget)
 
   #create loop variable and then call urwid event loop
   loop = urwid.MainLoop(test_widget, palette, unhandled_input=unhandled_input, screen=urwid.curses_display.Screen())
