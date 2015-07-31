@@ -16,7 +16,7 @@ class CreateTableInfo:
     self.table_name = ""
     self.table_fields = ""
 
-def show_db_createtable(main_body="test", user_info="test"):
+def show_db_createtable(main_body, user_info):
 
   #used to easily insert a blank line widget
   blank = urwid.Divider()
@@ -72,9 +72,27 @@ def show_db_createtable(main_body="test", user_info="test"):
 
 
 def second_createtable(main_body, user_info, table_info):
-  print table_info.table_name
-  print table_info.table_fields
+  blank = urwid.Divider()
+  text_1 = urwid.Text([u"Creating Table: ", table_info.table_name])
 
   #build out second portion of UI to create a table
 
+  #this is going to be very challenging to implement
+
+  #edit_attribute = 
+
+  listbox_content = [
+    blank,
+    urwid.Padding(text_1, left=2)
+
+
+  ]
+
+  listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
+  listbox = urwid.BoxAdapter(listbox, 5)
+
+  main_body.original_widget = listbox
+
+
+  
 
