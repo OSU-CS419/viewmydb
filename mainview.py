@@ -4,7 +4,7 @@ import urwid
 import psqlDB
 import DBstructure
 import DBcreatetable
-
+import runsql
 
 
 """
@@ -28,6 +28,9 @@ def show_main_view(frame, body, user_info):
 
   #Signal Handler for the Run SQL button
   def run_sql(button):
+    #run the code that generates the run sql input view
+    main_body.original_widget = runsql.show_runsql(main_body, user_info)
+
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
 
