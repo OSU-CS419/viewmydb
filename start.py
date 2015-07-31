@@ -16,6 +16,13 @@ screen implementation be in a class. I don't think it makes much sense to use
 classes here as we aren't dealing with objects.
 So, I'm trying to make it a functional programming approach.
 
+!!!!
+I just read on urwid's site that urwid.AttrWrap is deprecated
+http://urwid.org/reference/deprecated.html
+it's not absolutely necessary to change all the previous ones right now, but
+moving forward we should use AttrMap
+http://urwid.org/reference/widget.html#attrmap
+
 """
 
 
