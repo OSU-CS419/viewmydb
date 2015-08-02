@@ -37,7 +37,8 @@ palette = [
   ('btnf','light gray','dark blue'),
   ('main_sel', 'black', 'light gray'),
   ('main_self', 'light gray', 'black'),
-  ('selected', 'light gray', 'dark red')
+  ('selected', 'light gray', 'dark red'),
+  ('error', 'light gray', 'dark red')
 ]
 
 

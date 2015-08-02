@@ -37,12 +37,17 @@ def create_main_view():
 
   #signal handler for the connect button
   def db_connect(button):
-    #ADD LATER: check DB connection and show error if not working
-    #if error, let user enter in data again and show error
     user_info.db_conn = psqlDB.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
-    #build out and show the main app view on the screen
-    mainview.show_main_view(frame, body, user_info)
+    # if connection error returned
+    if user_info.db_conn == -1:
+        db_error_box.original_widget = urwid.AttrMap( urwid.Text(u"Incorrect username, database name, or password. Please try again"),
+          'error', 'error')
+
+    # if good connection returned
+    else:
+        #build out and show the main app view on the screen
+        mainview.show_main_view(frame, body, user_info)
 
     #show connect button being pressed in frame footer
     frame.footer = urwid.AttrWrap(urwid.Text(
@@ -95,6 +100,9 @@ def create_main_view():
   #connect button
   db_connect_btn = urwid.AttrWrap( urwid.Button(u"Connect", db_connect), 'main_sel', 'main_self')
 
+  #error box
+  db_error_box = urwid.AttrMap( urwid.Text(u""), 'main_sel')
+
   #This is the pile widget that holds all of the main body widgets
   body = urwid.WidgetPlaceholder( urwid.Filler( urwid.Padding(      
       urwid.Pile([
@@ -106,7 +114,9 @@ def create_main_view():
         blank,
         urwid.Padding( urwid.Pile([db_uname_edit, db_name_edit, db_pw_edit]), left=5, width=45),
         blank,
-        urwid.Padding(db_connect_btn, left=5, width=11)
+        urwid.Padding(db_connect_btn, left=5, width=11),
+	blank,
+	urwid.Padding(db_error_box, left=5, width=50)
       ]), left=5, right=5),
     valign='top', top=3))
   
