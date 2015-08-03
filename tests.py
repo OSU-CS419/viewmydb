@@ -1,5 +1,5 @@
 
-import backend
+import psqlDB
 
 """
 NOTES
@@ -17,18 +17,29 @@ can just run 'python tests.py' to run this file
 # tests
 # ------------------------------------------------
 
+# takes a Python list object and builds a table of urwid widgets to show it
+def show_table(table):
+  for index, row in enumerate(table):
+    print str(index) + ": "
+    for index, element in enumerate(row):
+      print str(index) + ":" + str(element)
+
 #connectdb w/ dbname, username, pass
-cur = backend.connectdb("test1", "postgres", "cs419db")
+cur = psqlDB.connectdb("postgres", "postgres", "cs419db")
 if cur == -1:
   print "error connecting; please check dbname, username, password"
 else:
   print "successfully connected"
 
   # get all table names
-  tablenames = backend.gettables(cur)
+  tablenames = psqlDB.gettables(cur)
   print tablenames
 
+  # get all column names
+  cols = psqlDB.getcolnames(cur, tablenames[0])
+  print cols
+
   # get all table rows
-  rows = backend.allrows(cur, tablenames[0])
+  rows = psqlDB.allrows(cur, tablenames[0])
   print rows
 
