@@ -5,7 +5,8 @@ import urwid.curses_display
 
 #import whatever file the widget you need to test is in
 import DBcreatetable
-
+import tablestructure
+import connect
 
 """
 NOTES
@@ -45,7 +46,9 @@ def unhandled_input(key):
 def main():
   
   #TEST WIDGET GOES HERE-----------------------------------
-  test_widget = DBcreatetable.show_db_createtable("test", "test")
+#  test_widget = tablestructure.showTables([('row1', 'row1', 'row1'), ('row2', 'row2', 'row2'), ('row3', 'row3', 'row3')], ['name1', 'name2', 'name3'])
+#  test_widget = DBcreatetable.show_db_createtable("test", "test")
+  test_widget= tablestructure.showTables(connect.cols, connect.rows)	# method to dynamically show all table rows
   test_widget = urwid.Filler(test_widget)
 
   #create loop variable and then call urwid event loop
