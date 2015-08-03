@@ -41,7 +41,8 @@ def create_main_view():
 
     # if connection error returned
     if user_info.db_conn == -1:
-        db_error_box.original_widget = urwid.AttrMap( urwid.Text(u"Incorrect username, database name, or password. Please try again"),
+        db_error_box.original_widget = urwid.AttrMap( urwid.Text
+          (u"Incorrect username, database name, or password. Please try again"),
           'error', 'error')
 
     # if good connection returned
@@ -93,7 +94,7 @@ def create_main_view():
   urwid.connect_signal(db_name_edit, 'change', edit_change_event)
   db_name_edit = urwid.AttrWrap(db_name_edit, 'main_sel', 'main_self')
 
-  db_pw_edit = urwid.Edit(u"Database password: ", "")
+  db_pw_edit = urwid.Edit(u"Database password: ", "", mask=u"*")
   urwid.connect_signal(db_pw_edit, 'change', edit_change_event)
   db_pw_edit = urwid.AttrWrap(db_pw_edit, 'main_sel', 'main_self')
 
