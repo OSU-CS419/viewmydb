@@ -63,3 +63,16 @@ def allrows(cur, name):
   except:
     return -1
 
+# takes psycopg2 cursor object
+# returns list of all column names on success, -1 on failure
+def getcolnames(cur, table):
+  try:
+    SQL = "SELECT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
+    cur.execute(SQL)
+    data = cur.fetchall()
+    columns = []
+    for column in data:
+      columns.append(column[0])
+    return columns
+  except:
+    return -1;
