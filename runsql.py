@@ -33,7 +33,7 @@ def show_runsql(main_body, user_info):
     text_error.original_widget.set_text(u" No error, query ran successfully!")
     size = (5,)
     text_error.render(size)
-    
+    go
 
   #signal handler for text input, stores input information from user
   def edit_change_event(self, text):
