@@ -61,7 +61,8 @@ def main():
   #what allows the user to exit the program.
   def unhandled_input(key):
     if key == 'q':
-      user_info.db_conn.close()
+      if user_info.db_conn != "":
+        user_info.db_conn.close()  
       raise urwid.ExitMainLoop()
 
   #call function to create login screen widget, which is opening widget used
