@@ -37,7 +37,6 @@ class UserDBInfo:
     self.psql = False
     self.mysql = False
 
-
 #This is the color palette used for the program. the format is "name, foreground, background"
 palette = [
   ('header', 'light gray', 'dark red'),
@@ -53,18 +52,17 @@ palette = [
   ('error', 'light gray', 'dark red')
 ]
 
-
-#This function handles all input that isn't directly handled by a widget. This is
-#what allows the user to exit the program.
-def unhandled_input(key):
-  if key == 'q':
-    raise urwid.ExitMainLoop()
-
-
 #Main function to start the program
 def main():
   #creating the object to store all database information
   user_info = UserDBInfo()
+
+  #This function handles all input that isn't directly handled by a widget. This is
+  #what allows the user to exit the program.
+  def unhandled_input(key):
+    if key == 'q':
+      user_info.db_conn.close()
+      raise urwid.ExitMainLoop()
 
   #call function to create login screen widget, which is opening widget used
   login_widget = loginview.create_main_view(user_info)
