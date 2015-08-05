@@ -76,3 +76,13 @@ def getcolnames(cur, table):
     return columns
   except:
     return -1;
+
+# takes psycopg2 cursor object and text string of query to run
+# returns 1 on success and error message on failure
+def runquery(cur, text):
+  try:
+    cur.execute(text)
+    return 1
+  except psycopg2.Error as e:
+    return e.pgerror
+
