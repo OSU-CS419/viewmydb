@@ -75,4 +75,4 @@ def getcolnames(cur, table):
       columns.append(column[0])
     return columns
   except:
-    return -1;
+    return -1
