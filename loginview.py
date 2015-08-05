@@ -33,25 +33,31 @@ def create_main_view(user_info):
     else:
       dbflag = False		# catches blank radio button input
 
-    if dbflag == True:
-      # connect to the db
-      user_info.db_conn = user_info.db_obj.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
+    if (user_info.db_name and user_info.db_uname and user_info.db_pw):
+      if dbflag == True:
+        # connect to the db
+        user_info.db_conn = user_info.db_obj.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
-      # if connection error returned
-      if user_info.db_conn == -1:
-        db_error_box.original_widget = urwid.AttrMap( urwid.Text
-        (u"Incorrect username, database name, or password. Please try again"),
-        'error', 'error')
+        # if connection error returned
+        if user_info.db_conn == -1:
+          db_error_box.original_widget = urwid.AttrMap( urwid.Text
+          (u"Incorrect username, database name, or password. Please try again"),
+          'error', 'error')
 
-      # if good connection returned
+        # if good connection returned
+        else:
+          #build out and show the main app view on the screen
+          mainview.show_main_view(frame, body, user_info)
+
       else:
-        #build out and show the main app view on the screen
-        mainview.show_main_view(frame, body, user_info)
-
+        db_error_box.original_widget = urwid.AttrMap( urwid.Text
+          (u"Please select a database protocol above"),
+          'error', 'error')
     else:
       db_error_box.original_widget = urwid.AttrMap( urwid.Text
-        (u"Please select a database protocol above"),
-        'error', 'error')
+          (u"Please provide a username, database name, and password"),
+          'error', 'error')
+
     #show connect button being pressed in frame footer
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
