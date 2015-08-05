@@ -12,43 +12,29 @@ This module will also run the sql query and show a success message if it works
 
 """
 
+class Qinfo:
+  def __init__(self):
+    query_text = ""
+    query_status = ""
 
 def show_runsql(main_body, user_info):
   #used to easily insert a blank line widget
   blank = urwid.Divider()
 
-  query_text = ""
+  query_info = Qinfo()
 
   #signal handler for text input, stores input information from user
   def edit_change_event(self, text):
-    query_text = text
-
+    query_info.query_text = text
 
   #signal handler for the run button
   def run_btn_press(button):
-    #ADD ERROR HANDLING!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #error handling to make sure the sql query works
-    #if no error, then show success message and sql query
+    query_info.query_status = user_info.db_obj.runquery(user_info.db_conn, query_info.query_text)
 
-    #text_error.set_text(u"No error, query ran successfully!")
-    #text_error.set_attr_map({None:'topmenu'})
-    #text_error.original_widget.set_text(u" No error, query ran successfully!")
-    #size = (5,)
-    #text_error.render(size)
-    user_info.db_conn.runquery()
-
-    print "TeST"
-
-    try:
-      user_info.db_conn.execute(query_text)
+    if query_info.query_status == 1:
       text_error.original_widget = urwid.AttrWrap( urwid.Text(u" No error, query ran successfully"), 'topmenu')
-    except psycopg2.Error as e:
-      query_error = u"There was an error"
-      #query_error = e.pgerror
-      text_error.original_widget = urwid.AttrWrap( urwid.Text(query_error), 'error')
-      print e
-
- 
+    else:
+      text_error.original_widget = urwid.AttrWrap( urwid.Text(query_info.query_status), 'error')
 
   #variables to hold text to show user for login view
   text_1 = urwid.Text(u"Enter a SQL query to run below:")
