@@ -30,14 +30,16 @@ class Psql:
   def connectdb(self, db, un, pw):
     try:
       conn = psycopg2.connect(database=db, user=un, password=pw)
-      cur = conn.cursor()
-      return cur
+      #conn = psycopg2.connect(database="test1", user="postgres", password="cs419db")
+      #cur = conn.cursor()
+      return conn
     except psycopg2.OperationalError:
       return -1
 
   # takes psycopg2 cursor object
   # returns list of table names on success, -1 on failure
-  def gettables(self, cur):
+  def gettables(self, conn):
+    cur = conn.cursor()
     try:
       cur.execute("""SELECT DISTINCT table_name FROM information_schema.tables 
       WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name;""")
@@ -46,13 +48,16 @@ class Psql:
       names = []
       for table in data:
         names.append(table[0])
+      cur.close()
       return names
     except:
+      cur.cose()
       return -1
 
   # takes psycopg2 cursor object
   # returns list of row data on success, -1 on failure
-  def allrows(self, cur, name):
+  def allrows(self, conn, name):
+    cur = conn.cursor()
     SQL = "SELECT * FROM " + name + ";"
     try:
       cur.execute(SQL)
@@ -60,13 +65,16 @@ class Psql:
       rows = []
       for row in data:
         rows.append(row)
+      cur.close()
       return rows
     except:
+      cur.close()
       return -1
 
   # takes psycopg2 cursor object
   # returns list of all column names on success, -1 on failure
-  def getcolnames(self, cur, table):
+  def getcolnames(self, conn, table):
+    cur = conn.cursor()
     try:
       SQL = "SELECT DISTINCT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
       cur.execute(SQL)
@@ -74,17 +82,23 @@ class Psql:
       columns = []
       for column in data:
         columns.append(column[0])
+      cur.close()
       return columns
     except:
+      cur.close()
       return -1
 
   # takes psycopg2 cursor object and text string of query to run
   # returns 1 on success and error message on failure
-  def runquery(self, cur, text):
+  def runquery(self, conn, text):
+    cur = conn.cursor()
     try:
       cur.execute(text)
+      conn.commit()
+      cur.close()
       return 1
     except psycopg2.Error as e:
+      cur.close()
       return e.pgerror
 
 
