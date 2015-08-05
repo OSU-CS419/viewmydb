@@ -15,24 +15,10 @@ create the main view for the program, with a connected DB.
 
 """
 
-#This class is used to store all of the data pertaining to the database connection
-#It is used in a similar manner to a C struct
-class UserDBInfo:
-  def __init__(self):
-    self.db_uname = ""
-    self.db_name = ""
-    self.db_pw = ""
-    self.db_conn = ""
-    self.db_obj = ""
-    self.psql = False
-    self.mysql = False
 
-def create_main_view():
+def create_main_view(user_info):
   #used to easily insert a blank line widget
   blank = urwid.Divider()
-
-  #create a variable to hold all of the DB info
-  user_info = UserDBInfo()
 
   #signal handler for the connect button
   def db_connect(button):
@@ -69,7 +55,6 @@ def create_main_view():
     #show connect button being pressed in frame footer
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
-
 
   #signal handler for radio buttons, stores input information from user
   def radio_change(self, state):

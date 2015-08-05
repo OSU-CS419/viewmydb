@@ -25,6 +25,18 @@ http://urwid.org/reference/widget.html#attrmap
 
 """
 
+#This class is used to store all of the data pertaining to the database connection
+#It is used in a similar manner to a C struct
+class UserDBInfo:
+  def __init__(self):
+    self.db_uname = ""
+    self.db_name = ""
+    self.db_pw = ""
+    self.db_conn = ""
+    self.db_obj = ""
+    self.psql = False
+    self.mysql = False
+
 
 #This is the color palette used for the program. the format is "name, foreground, background"
 palette = [
@@ -51,8 +63,11 @@ def unhandled_input(key):
 
 #Main function to start the program
 def main():
+  #creating the object to store all database information
+  user_info = UserDBInfo()
+
   #call function to create login screen widget, which is opening widget used
-  login_widget = loginview.create_main_view()
+  login_widget = loginview.create_main_view(user_info)
   
   #create loop variable and then call urwid event loop
   loop = urwid.MainLoop(login_widget, palette, unhandled_input=unhandled_input, screen=urwid.curses_display.Screen())
