@@ -22,6 +22,7 @@ class UserDBInfo:
     self.db_uname = ""
     self.db_name = ""
     self.db_pw = ""
+    self.db_conn = ""
     self.psql = False
     self.mysql = False
 
