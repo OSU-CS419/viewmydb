@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import psqlDB
+import tablestructure
 
 """
 NOTES
@@ -27,12 +28,13 @@ else:
   print tablenames
 
   # get all column names
-  cols = psqlDB.getcolnames(cur, tablenames[0])
+  cols = psqlDB.getcolnames(cur, tablenames[1])
   print "All column names in first DB"
   print cols
 
   # get all table rows
-  rows = psqlDB.allrows(cur, tablenames[0])
+  rows = psqlDB.allrows(cur, tablenames[1])
   print "All rows in first DB"
   print rows
 
+  print "-------------------------------------------"
