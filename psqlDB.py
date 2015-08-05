@@ -38,7 +38,7 @@ def connectdb(db, un, pw):
 # returns list of table names on success, -1 on failure
 def gettables(cur):
   try:
-    cur.execute("""SELECT table_name FROM information_schema.tables 
+    cur.execute("""SELECT DISTINCT table_name FROM information_schema.tables 
     WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name;""")
     data = cur.fetchall()
     #print data
@@ -67,7 +67,7 @@ def allrows(cur, name):
 # returns list of all column names on success, -1 on failure
 def getcolnames(cur, table):
   try:
-    SQL = "SELECT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
+    SQL = "SELECT DISTINCT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
     cur.execute(SQL)
     data = cur.fetchall()
     columns = []
