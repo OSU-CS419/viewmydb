@@ -4,7 +4,7 @@ import urwid
 import DBstructure
 import DBcreatetable
 import runsql
-
+import tablestructure
 
 """
 NOTES
@@ -41,7 +41,7 @@ def show_main_view(frame, body, user_info):
       [u" Pressed: ", button.get_label()]), 'header')
 
   #Creating the widget that holds the top bar information
-  selected = urwid.Text([u" Selected Entity: ", user_info.db_name])
+  selected = urwid.Text([u" Selected Database: ", user_info.db_name])
   top_bar = urwid.Columns([
     urwid.AttrWrap( selected, 'topmenu'),
     ('fixed', 15, urwid.AttrWrap( urwid.Padding( urwid.Button(
@@ -57,11 +57,19 @@ def show_main_view(frame, body, user_info):
   text_leftcol1_1 = (u"Database:")
   text_leftcol2_1 = (u"Tables:")
 
-  #signal handler for left column widget buttons
-  def leftcol_btn_press(button):
+  #signal handler for left column database button
+  def leftcol_btn_press_db(button):
+    main_body.original_widget = DBstructure.show_db_structure(user_info)
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
-    selected.set_text([u" Selected Entity: ", button.get_label()])
+    selected.set_text([u" Selected Database: ", button.get_label()])
+
+  #signal handler for left column widget buttons
+  def leftcol_btn_press_table(button):
+    main_body.original_widget = tablestructure.showTables(sqlDB.getcolnames(user_info.db_conn, button.get_label()), sqlDB.allrows(user_info.db_conn, button.get_label()))
+    frame.footer = urwid.AttrWrap(urwid.Text(
+      [u" Pressed: ", button.get_label()]), 'header')
+    selected.set_text([u" Selected Table: ", button.get_label()])
 
   #store database name that user is connected to
   db_name = user_info.db_name
@@ -71,10 +79,10 @@ def show_main_view(frame, body, user_info):
 
   #create the table button widgets
   table_buttons = urwid.Pile(
-    [urwid.AttrWrap( urwid.Button(txt, leftcol_btn_press), 'btn', 'btnf') for txt in db_tables ])
+    [urwid.AttrWrap( urwid.Button(txt, leftcol_btn_press_table), 'btn', 'btnf') for txt in db_tables ])
 
   #creating variable for database button widget
-  db_button = urwid.AttrWrap( urwid.Button(db_name, leftcol_btn_press), 'btn', 'btnf')
+  db_button = urwid.AttrWrap( urwid.Button(db_name, leftcol_btn_press_db), 'btn', 'btnf')
 
   #left column widget variable build
   left_column = urwid.AttrWrap( urwid.Padding (urwid.Pile([
