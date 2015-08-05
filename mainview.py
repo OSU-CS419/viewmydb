@@ -18,13 +18,6 @@ This is the code that sets up and displays the main dashboard view for the progr
 
 
 def show_main_view(frame, body, user_info):
-  # the way it is currently, this code block would need to be in every file
-  # to determine which db to import
-  if user_info.mysql == True and user_info.psql == False:
-    import mysqlDB as sqlDB
-  elif user_info.psql == True and user_info.mysql == False:
-    import psqlDB as sqlDB
-
   blank = urwid.Divider()
 
   text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool. Anything within < > brackets is a selectable button. If the tables do not look right, please make the console window wider.")
@@ -66,7 +59,7 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column widget buttons
   def leftcol_btn_press_table(button):
-    main_body.original_widget = tablestructure.showTables(sqlDB.getcolnames(user_info.db_conn, button.get_label()), sqlDB.allrows(user_info.db_conn, button.get_label()))
+    main_body.original_widget = tablestructure.showTables(user_info.db_obj.getcolnames(user_info.db_conn, button.get_label()), user_info.db_obj.allrows(user_info.db_conn, button.get_label()))
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
     selected.set_text([u" Selected Table: ", button.get_label()])
@@ -75,7 +68,7 @@ def show_main_view(frame, body, user_info):
   db_name = user_info.db_name
 
   #store the table names
-  db_tables = sqlDB.gettables(user_info.db_conn)
+  db_tables = user_info.db_obj.gettables(user_info.db_conn)
 
   #create the table button widgets
   table_buttons = urwid.Pile(

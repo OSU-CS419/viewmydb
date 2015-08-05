@@ -23,6 +23,7 @@ class UserDBInfo:
     self.db_name = ""
     self.db_pw = ""
     self.db_conn = ""
+    self.db_obj = ""
     self.psql = False
     self.mysql = False
 
@@ -37,17 +38,18 @@ def create_main_view():
   def db_connect(button):
     if user_info.mysql == True:
       import mysqlDB as sqlDB	# for MySQL
+      user_info.db_obj = sqlDB.MYsql()
       dbflag = True
-
     elif user_info.psql == True:
       import psqlDB as sqlDB	# for PostgreSQL
+      user_info.db_obj = sqlDB.Psql()
       dbflag = True
     else:
       dbflag = False		# catches blank radio button input
 
     if dbflag == True:
       # connect to the db
-      user_info.db_conn = sqlDB.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
+      user_info.db_conn = user_info.db_obj.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
       # if connection error returned
       if user_info.db_conn == -1:

@@ -24,64 +24,67 @@ to execute. I can investigate that further later on, but for now I just wanted
 it to work.
 """
 
-# takes database name, username, password
-# returns psycopg2 cursor object on success, -1 on failure
-def connectdb(db, un, pw):
-  try:
-    conn = psycopg2.connect(database=db, user=un, password=pw)
-    cur = conn.cursor()
-    return cur
-  except psycopg2.OperationalError:
-    return -1
+class Psql:
+  # takes database name, username, password
+  # returns psycopg2 cursor object on success, -1 on failure
+  def connectdb(self, db, un, pw):
+    try:
+      conn = psycopg2.connect(database=db, user=un, password=pw)
+      cur = conn.cursor()
+      return cur
+    except psycopg2.OperationalError:
+      return -1
 
-# takes psycopg2 cursor object
-# returns list of table names on success, -1 on failure
-def gettables(cur):
-  try:
-    cur.execute("""SELECT DISTINCT table_name FROM information_schema.tables 
-    WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name;""")
-    data = cur.fetchall()
-    #print data
-    names = []
-    for table in data:
-      names.append(table[0])
-    return names
-  except:
-    return -1
+  # takes psycopg2 cursor object
+  # returns list of table names on success, -1 on failure
+  def gettables(self, cur):
+    try:
+      cur.execute("""SELECT DISTINCT table_name FROM information_schema.tables 
+      WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name;""")
+      data = cur.fetchall()
+      #print data
+      names = []
+      for table in data:
+        names.append(table[0])
+      return names
+    except:
+      return -1
 
-# takes psycopg2 cursor object
-# returns list of row data on success, -1 on failure
-def allrows(cur, name):
-  SQL = "SELECT * FROM " + name + ";"
-  try:
-    cur.execute(SQL)
-    data = cur.fetchall()
-    rows = []
-    for row in data:
-      rows.append(row)
-    return rows
-  except:
-    return -1
+  # takes psycopg2 cursor object
+  # returns list of row data on success, -1 on failure
+  def allrows(self, cur, name):
+    SQL = "SELECT * FROM " + name + ";"
+    try:
+      cur.execute(SQL)
+      data = cur.fetchall()
+      rows = []
+      for row in data:
+        rows.append(row)
+      return rows
+    except:
+      return -1
 
-# takes psycopg2 cursor object
-# returns list of all column names on success, -1 on failure
-def getcolnames(cur, table):
-  try:
-    SQL = "SELECT DISTINCT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
-    cur.execute(SQL)
-    data = cur.fetchall()
-    columns = []
-    for column in data:
-      columns.append(column[0])
-    return columns
-  except:
-    return -1
+  # takes psycopg2 cursor object
+  # returns list of all column names on success, -1 on failure
+  def getcolnames(self, cur, table):
+    try:
+      SQL = "SELECT DISTINCT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
+      cur.execute(SQL)
+      data = cur.fetchall()
+      columns = []
+      for column in data:
+        columns.append(column[0])
+      return columns
+    except:
+      return -1
 
-# takes psycopg2 cursor object and text string of query to run
-# returns 1 on success and error message on failure
-def runquery(cur, text):
-  try:
-    cur.execute(text)
-    return 1
-  except psycopg2.Error as e:
-    return e.pgerror
+  # takes psycopg2 cursor object and text string of query to run
+  # returns 1 on success and error message on failure
+  def runquery(self, cur, text):
+    try:
+      cur.execute(text)
+      return 1
+    except psycopg2.Error as e:
+      return e.pgerror
+
+
