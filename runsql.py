@@ -33,6 +33,7 @@ def show_runsql(main_body, user_info):
 
     if query_info.query_status == 1:
       text_error.original_widget = urwid.AttrWrap( urwid.Text(u" No error, query ran successfully"), 'topmenu')
+      sql_edit.set_edit_text(u"")
     else:
       text_error.original_widget = urwid.AttrWrap( urwid.Text(query_info.query_status), 'error')
 
