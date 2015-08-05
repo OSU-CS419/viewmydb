@@ -37,15 +37,11 @@ def showTables(colnames, rowdata):
     if widget_lists:				# if list not empty
       mypile = urwid.Pile(widget_lists[i])	# make a Pile with the list of widgets
     else:
-      mypile = urwid.Pile([			# a few blank widgets to fill up some space
-      urwid.Text(u""),
-      urwid.Text(u""),
-      urwid.Text(u""),
-      urwid.Text(u""),
+      mypile = urwid.Pile([			# a blank widget to fill up some space
       urwid.Text(u""),
     ])
     # make a linebox with the Pile and the columnname
-    mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))
+    mylinebox = (urwid.LineBox((mypile), title=colnames[i]))
     columns.append(mylinebox)			# append the linebox to the list of columns
 
   #signal handler for the more button
