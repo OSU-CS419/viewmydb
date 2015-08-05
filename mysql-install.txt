@@ -1,0 +1,79 @@
+1. install MySQL
+
+   $ sudo apt-get install mysql-server
+   (will prompt for a password to use for root account)
+
+   the server should start automatically.
+
+   stop with:
+     $ sudo service mysql stop
+   start with:
+     $ sudo service mysql start
+   restart with:
+     $ sudo service mysql restart
+
+   start shell with:
+     $ mysql -u root -p (you can leave off '-u root' if you're logged in as root)
+   
+   create database with:
+     $ create database <database_name>;  (semicolons are strictly required)
+
+   connect to that database with:        (this took me like forever to figure out)
+     $ use <database_name>;
+
+   from here you can create tables, etc.
+   I exported some tables from my onid account to populate it.
+   Just go to a table, click export, leave default options, click 'Go'
+   Then copy/paste CREATE TABLE/INSERT INTO statements.  One of mine is:
+
+"""
+CREATE TABLE IF NOT EXISTS `Person` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(255) NOT NULL,
+  `LastName` varchar(255) NOT NULL,
+  `DoB` date DEFAULT NULL,
+  `PoB` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `fName_lName` (`FirstName`,`LastName`),
+  KEY `fk_Place_of_Birth` (`PoB`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+
+--
+-- Dumping data for table `Person`
+--
+
+INSERT INTO `Person` (`ID`, `FirstName`, `LastName`, `DoB`, `PoB`) VALUES
+(1, 'TOM', 'CRUISE', NULL, 6),
+(2, 'RIDLEY', 'SCOTT', NULL, NULL),
+(3, 'JAMES', 'CAMERON', '1954-08-16', 1),
+(4, 'SIGOURNEY', 'WEAVER', NULL, 9),
+(5, 'TOM', 'SKERRITT', NULL, 7),
+(6, 'YAPHET', 'KOTTO', NULL, 9),
+(7, 'HARRY', 'STANTON', NULL, NULL),
+(8, 'BILL', 'PAXTON', NULL, NULL),
+(9, 'MICHAEL', 'BIEHN', NULL, 10),
+(10, 'PAUL', 'REISER', '1957-03-30', 9),
+(11, 'ROBERT', 'ZEMECKIS', NULL, NULL),
+(12, 'TOM', 'HANKS', '1956-07-09', 2),
+(15, 'SUSAN', 'SARANDON', NULL, NULL),
+(23, 'FRANK', 'DARABONT', NULL, 8),
+(24, 'TIM', 'ROBBINS', NULL, NULL),
+(25, 'MORGAN', 'FREEMAN', NULL, NULL),
+(26, 'LUC', 'BESSON', NULL, NULL),
+(27, 'MARTIN', 'SCORCESE', NULL, NULL),
+(28, 'ANG', 'LEE', NULL, NULL),
+(29, 'ETHAN', 'COEN', NULL, NULL),
+(30, 'JOSH', 'BROLIN', '1968-02-12', NULL),
+(31, 'ADAM', 'PEDIGO', '1983-10-15', 3),
+(32, 'JOHN', 'HURT', '1940-01-22', 11),
+(33, 'IAN', 'HOLM', NULL, NULL),
+(34, 'DAVID', 'FINCHER', NULL, NULL),
+(35, 'AMENEH', 'SARBAZIAZAD', NULL, NULL);
+"""
+
+2. install the python connector
+
+   $ sudo apt-get install python-mysqldb
+
+
+3. now you should be able to connect to either database now   
