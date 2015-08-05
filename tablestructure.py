@@ -18,11 +18,12 @@ Currently breaks when there are no rows to render
 # returns a list of widget lists
 def splitTable(allrows):
   cols = []
-  for i in range(0, len(allrows[0])):
-    col = []
-    for index, row in enumerate(allrows):
-      col.append(urwid.Text(str(row[i])))
-    cols.append(col)
+  if allrows:
+    for i in range(0, len(allrows[0])):
+      col = []
+      for index, row in enumerate(allrows):
+        col.append(urwid.Text(str(row[i])))
+      cols.append(col)
 
   return cols
 
@@ -33,7 +34,16 @@ def showTables(colnames, rowdata):
   widget_lists = splitTable(rowdata)		# get a list of a list of widgets
   columns = []					# empty columns list
   for i in range (0, len(colnames)):		# for each column
-    mypile = urwid.Pile(widget_lists[i])	# make a Pile with the list of widgets
+    if widget_lists:				# if list not empty
+      mypile = urwid.Pile(widget_lists[i])	# make a Pile with the list of widgets
+    else:
+      mypile = urwid.Pile([			# a few blank widgets to fill up some space
+      urwid.Text(u""),
+      urwid.Text(u""),
+      urwid.Text(u""),
+      urwid.Text(u""),
+      urwid.Text(u""),
+    ])
     # make a linebox with the Pile and the columnname
     mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))
     columns.append(mylinebox)			# append the linebox to the list of columns
