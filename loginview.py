@@ -1,10 +1,7 @@
 #!/usr/bin/python
 
 import urwid
-import psqlDB
 import mainview
-
-#will also import mysqlDB once we factor in the dual DB structure b/w mysql/psql
 
 """
 NOTES
@@ -37,19 +34,35 @@ def create_main_view():
 
   #signal handler for the connect button
   def db_connect(button):
-    user_info.db_conn = psqlDB.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
+    if user_info.mysql == True:
+      import mysqlDB as sqlDB	# for MySQL
+      dbflag = True
 
-    # if connection error returned
-    if user_info.db_conn == -1:
-        db_error_box.original_widget = urwid.AttrMap( urwid.Text
-          (u"Incorrect username, database name, or password. Please try again"),
-          'error', 'error')
-
-    # if good connection returned
+    elif user_info.psql == True:
+      import psqlDB as sqlDB	# for PostgreSQL
+      dbflag = True
     else:
+      dbflag = False		# catches blank radio button input
+
+    if dbflag == True:
+      # connect to the db
+      user_info.db_conn = sqlDB.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
+
+      # if connection error returned
+      if user_info.db_conn == -1:
+        db_error_box.original_widget = urwid.AttrMap( urwid.Text
+        (u"Incorrect username, database name, or password. Please try again"),
+        'error', 'error')
+
+      # if good connection returned
+      else:
         #build out and show the main app view on the screen
         mainview.show_main_view(frame, body, user_info)
 
+    else:
+      db_error_box.original_widget = urwid.AttrMap( urwid.Text
+        (u"Please select a database protocol above"),
+        'error', 'error')
     #show connect button being pressed in frame footer
     frame.footer = urwid.AttrWrap(urwid.Text(
       [u" Pressed: ", button.get_label()]), 'header')
@@ -65,7 +78,6 @@ def create_main_view():
       if state == True:
         user_info.psql = True
         user_info.mysql = False
-
 
   #signal handler for text input, stores input information from user
   def edit_change_event(self, text):

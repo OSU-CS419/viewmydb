@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import urwid
-import psqlDB
 import DBstructure
 import DBcreatetable
 import runsql
@@ -19,6 +18,13 @@ This is the code that sets up and displays the main dashboard view for the progr
 
 
 def show_main_view(frame, body, user_info):
+  # the way it is currently, this code block would need to be in every file
+  # to determine which db to import
+  if user_info.mysql == True and user_info.psql == False:
+    import mysqlDB as sqlDB
+  elif user_info.psql == True and user_info.mysql == False:
+    import psqlDB as sqlDB
+
   blank = urwid.Divider()
 
   text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool. Anything within < > brackets is a selectable button. If the tables do not look right, please make the console window wider.")
@@ -61,7 +67,7 @@ def show_main_view(frame, body, user_info):
   db_name = user_info.db_name
 
   #store the table names
-  db_tables = psqlDB.gettables(user_info.db_conn)
+  db_tables = sqlDB.gettables(user_info.db_conn)
 
   #create the table button widgets
   table_buttons = urwid.Pile(

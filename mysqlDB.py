@@ -47,3 +47,5 @@ if else if statement that instantiates the object based on what the user provide
 
 """
 
+def connectdb(db_name, db_uname, db_pw):
+  return -1
