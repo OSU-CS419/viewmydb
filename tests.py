@@ -30,12 +30,12 @@ can just run 'python tests.py' to run this file
 # ------------------------------------------------
 #connectdb w/ dbname, username, pass
 #conn = db.connectdb("testdb", "root", "mypassword")
-conn = db.connectdb("postgres", "postgres", "cs419db")
+conn = db.connectdb("test1", "postgres", "cs419db")
 
 if conn == -1:
   print "error connecting; please check dbname, username, password"
 else:
-  # get all table names
+  get all table names
   tablenames = db.gettables(conn)
   print "All tables in selected DB"
   print tablenames
@@ -49,6 +49,14 @@ else:
   rows = db.allrows(conn, tablenames[1])
   print "All rows in first DB"
   print rows
+
+  # get db info
+  info = db.getdbinfo(conn, "test1")
+  print info
+
+  # get db table info
+  table_info = db.getdb_tableinfo(conn)
+  print table_info
 
   print "-------------------------------------------"
 

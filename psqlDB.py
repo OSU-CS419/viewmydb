@@ -100,4 +100,37 @@ class Psql:
       cur.close()
       return e.pgerror
 
+  def getdbinfo(self, conn, name):
+    cur = conn.cursor()
+    try:
+      cur.execute("""SELECT d.datname AS "Name",
+          pg_catalog.pg_encoding_to_char(d.encoding) AS "Encoding",
+          d.datcollate AS "Collate"
+        FROM pg_catalog.pg_database d
+        WHERE datname=(%s);""", (name,))
+      data = cur.fetchall()
+      cur.close()
+      return data[0]
+    except:
+      cur.close()
+      return -1
 
+  def getdb_tableinfo(self, conn):
+    cur = conn.cursor()
+    try:
+      cur.execute("""SELECT relname AS "Table",
+          pg_size_pretty(pg_total_relation_size(relid)) AS "Size"
+        FROM pg_catalog.pg_statio_user_tables
+        ORDER BY pg_total_relation_size(relid) DESC;""")
+      data = cur.fetchall()
+      cur.close()
+      return data
+    except:
+      cur.close()
+      return -1
+
+
+
+# SELECT relname as "Table",
+# pg_size_pretty(pg_total_relation_size(relid)) As "Size"
+# FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;    
