@@ -49,6 +49,7 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column database button
   def leftcol_btn_press_db(button):
+    secondary_top.original_widget = urwid.Padding(blank)
     main_top.original_widget = urwid.Padding( urwid.Columns([
       ('fixed', 13, db_structure_button),
       ('fixed', 3, urwid.Text(u"  ")),
@@ -60,6 +61,21 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column table buttons
   def leftcol_btn_press_table(button):
+    tablename = button.get_label()
+    rename_text = "Rename '" + tablename + "'"
+    truncate_text = "Truncate '" + tablename + "'"
+    drop_text = "Drop '" + tablename + "'"
+    table_rename_btn = urwid.AttrWrap( urwid.Button(rename_text), 'btnf', 'btn')
+    table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text), 'btnf', 'btn')
+    table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text), 'btnf', 'btn')
+    secondary_top.original_widget = urwid.Padding( urwid.Columns([
+      ('fixed', (len(rename_text) + 4), table_rename_btn),
+      ('fixed', 3, urwid.Text(u"  ")),
+      ('fixed', (len(truncate_text) + 4), table_truncate_btn),
+      ('fixed', 3, urwid.Text(u"  ")),
+      ('fixed', (len(drop_text) + 4), table_drop_btn)
+    ]), left=2, right=2)
+
     db_table_browse_btn = urwid.AttrWrap( urwid.Button(u"Browse", leftcol_btn_press_table_browse, button.get_label()), 'btnf', 'btn')
     db_table_edit_btn = urwid.AttrWrap( urwid.Button(u"Edit", leftcol_btn_press_table_edit, button.get_label()), 'btnf', 'btn')
     main_top.original_widget = urwid.Padding( urwid.Columns([
@@ -132,6 +148,8 @@ def show_main_view(frame, body, user_info):
       ('fixed', 16, db_createtable_button)
     ])
   , left=2, right=2)
+
+  secondary_top = urwid.Padding(blank)
   #END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -164,6 +182,7 @@ def show_main_view(frame, body, user_info):
             urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
             urwid.AttrWrap( main_top, 'topmenu'),
             urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+            urwid.AttrWrap( secondary_top, 'bg'),
             blank,
             #main body
             main_body
