@@ -14,79 +14,52 @@ from the database. This will need to be added.
 
 def show_db_structure(user_info):
   #build out the table that shows the db structure stats
+  #get db info
+  db_info = user_info.db_obj.getdbinfo(user_info.db_conn, user_info.db_name)
+  
+  #get table names and size
+  db_tableinfo = user_info.db_obj.getdb_tableinfo(user_info.db_conn)
 
-  #Will have to fill all of this in with data received from db
-
-  table_name_col = urwid.LineBox( urwid.Pile([
-      urwid.Text(u"Table 1"),
-      urwid.Text(u"Table 2"),
-      urwid.Text(u"Table 3"),
-      urwid.Text(u"Table 4"),
-      urwid.Text(u"Table 5"),
-      urwid.Text(u"Table 6"),
-    ])
-  , title="Table", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
-
-  records_col = urwid.LineBox( urwid.Pile([
-      urwid.Text(u"Table 1"),
-      urwid.Text(u"Table 2"),
-      urwid.Text(u"Table 3"),
-      urwid.Text(u"Table 4"),
-      urwid.Text(u"Table 5"),
-      urwid.Text(u"Table 6"),
-    ])
-  , title="Records", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
-
-  type_col = urwid.LineBox( urwid.Pile([
-      urwid.Text(u"Table 1"),
-      urwid.Text(u"Table 2"),
-      urwid.Text(u"Table 3"),
-      urwid.Text(u"Table 4"),
-      urwid.Text(u"Table 5"),
-      urwid.Text(u"Table 6"),
-    ])
-  , title="Type", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
-
-  collation_col = urwid.LineBox( urwid.Pile([
-      urwid.Text(u"Table 1"),
-      urwid.Text(u"Table 2"),
-      urwid.Text(u"Table 3"),
-      urwid.Text(u"Table 4"),
-      urwid.Text(u"Table 5"),
-      urwid.Text(u"Table 6"),
-    ])
-  , title="Collation", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
-
-  size_col = urwid.LineBox( urwid.Pile([
-      urwid.Text(u"Table 1"),
-      urwid.Text(u"Table 2"),
-      urwid.Text(u"Table 3"),
-      urwid.Text(u"Table 4"),
-      urwid.Text(u"Table 5"),
-      urwid.Text(u"Table 6"),
-    ])
-  , title="Size")
+  table_names_list = []
+  for x in db_tableinfo:
+    table_names_list.append(urwid.Text(x[0]))
+  
+  table_sizes_list = []
+  for x in db_tableinfo:
+    table_sizes_list.append(urwid.Text(x[1]))
 
 
-  #signal handler for the more button
-  def more_btn_press(button):
-    print "this is the more button"
+  #widgets for the database info table
+  db_name_col = urwid.LineBox( 
+      urwid.Text(db_info[0])
+    , title="DB Name", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
+  encoding_col = urwid.LineBox( 
+      urwid.Text(db_info[1])
+    , title="Encoding", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
+  collation_col = urwid.LineBox( 
+      urwid.Text(db_info[2])
+    , title="Encoding")
 
-
-  #more button to show more results
-  #only show if results are greater than a certain amount
-  more_btn = urwid.AttrWrap( urwid.Button(u"More", more_btn_press), 'btnf', 'btn')
-  more_btn = urwid.Padding(more_btn, width=8)
+  #widgets for the database tables info table
+  table_names = urwid.LineBox( urwid.Pile(table_names_list)
+    , title="Name", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
+  table_sizes = urwid.LineBox( urwid.Pile(table_sizes_list)
+    , title="Size")
 
   structure_view = urwid.Padding( urwid.Pile( [
+    urwid.Text(u"Database Info:"),
     urwid.Columns([
-      table_name_col,
-      records_col,
-      type_col,
-      collation_col,
-      size_col
-    ]),
-    more_btn])
+        db_name_col,
+        encoding_col,
+        collation_col
+      ]),
+    urwid.Divider(),
+    urwid.Text(u"DB Tables:"),
+    urwid.Columns([
+        table_names,
+        table_sizes
+      ])
+    ])
   , left=2, right=2)
 
   structure_view = urwid.WidgetPlaceholder(structure_view)
