@@ -14,8 +14,8 @@ This module will also run the sql query and show a success message if it works
 
 class Qinfo:
   def __init__(self):
-    query_text = ""
-    query_status = ""
+    self.query_text = None
+    self.query_status = None
 
 def show_runsql(frame, body, user_info):
   #used to easily insert a blank line widget
@@ -29,7 +29,7 @@ def show_runsql(frame, body, user_info):
 
   #signal handler for the run button
   def run_btn_press(button):
-    if query_info.query_text != "":    
+    if query_info.query_text != None:
       query_info.query_status = user_info.db_obj.runquery(user_info.db_conn, query_info.query_text)
 
       if query_info.query_status == 1:
@@ -41,7 +41,7 @@ def show_runsql(frame, body, user_info):
       else:
         text_error.original_widget = urwid.AttrWrap( urwid.Text(query_info.query_status), 'error')
     else:
-      text_error.original_widget = urwid.AttrWrap( urwid.Text(u"You have enter in a query."), 'error')
+      text_error.original_widget = urwid.AttrWrap( urwid.Text(u" You have enter in a query."), 'error')
 
   #variables to hold text to show user for login view
   text_1 = urwid.Text(u"Enter a SQL query to run below:")
