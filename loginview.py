@@ -58,10 +58,6 @@ def create_main_view(user_info):
           (u"Please provide a username, database name, and password"),
           'error', 'error')
 
-    #show connect button being pressed in frame footer
-    frame.footer = urwid.AttrWrap(urwid.Text(
-      [u" Pressed: ", button.get_label()]), 'header')
-
   #signal handler for radio buttons, stores input information from user
   def radio_change(self, state):
     if self.label == "MySQL":

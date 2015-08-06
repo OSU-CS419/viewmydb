@@ -28,10 +28,7 @@ def show_main_view(frame, body, user_info):
   #Signal Handler for the Run SQL button
   def run_sql(button):
     #run the code that generates the run sql input view
-    main_body.original_widget = runsql.show_runsql(main_body, user_info)
-
-    frame.footer = urwid.AttrWrap(urwid.Text(
-      [u" Pressed: ", button.get_label()]), 'header')
+    main_body.original_widget = runsql.show_runsql(frame, body, user_info)
 
   #Creating the widget that holds the top bar information
   selected = urwid.Text([u" Selected Database: ", user_info.db_name])
@@ -53,15 +50,11 @@ def show_main_view(frame, body, user_info):
   #signal handler for left column database button
   def leftcol_btn_press_db(button):
     main_body.original_widget = DBstructure.show_db_structure(user_info)
-    frame.footer = urwid.AttrWrap(urwid.Text(
-      [u" Pressed: ", button.get_label()]), 'header')
     selected.set_text([u" Selected Database: ", button.get_label()])
 
   #signal handler for left column widget buttons
   def leftcol_btn_press_table(button):
     main_body.original_widget = tablestructure.showTables(user_info.db_obj.getcolnames(user_info.db_conn, button.get_label()), user_info.db_obj.allrows(user_info.db_conn, button.get_label()))
-    frame.footer = urwid.AttrWrap(urwid.Text(
-      [u" Pressed: ", button.get_label()]), 'header')
     selected.set_text([u" Selected Table: ", button.get_label()])
 
   #store database name that user is connected to

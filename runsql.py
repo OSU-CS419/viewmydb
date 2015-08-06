@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import urwid
-
+import mainview
 
 """
 NOTES
@@ -17,7 +17,7 @@ class Qinfo:
     query_text = ""
     query_status = ""
 
-def show_runsql(main_body, user_info):
+def show_runsql(frame, body, user_info):
   #used to easily insert a blank line widget
   blank = urwid.Divider()
 
@@ -29,13 +29,19 @@ def show_runsql(main_body, user_info):
 
   #signal handler for the run button
   def run_btn_press(button):
-    query_info.query_status = user_info.db_obj.runquery(user_info.db_conn, query_info.query_text)
+    if query_info.query_text != "":    
+      query_info.query_status = user_info.db_obj.runquery(user_info.db_conn, query_info.query_text)
 
-    if query_info.query_status == 1:
-      text_error.original_widget = urwid.AttrWrap( urwid.Text(u" No error, query ran successfully"), 'topmenu')
-      sql_edit.set_edit_text(u"")
+      if query_info.query_status == 1:
+        #show success message
+        frame.footer = urwid.AttrWrap(urwid.Text(u" Query executed successfully"), 'header')
+
+        #reload main view. this updates tables list if table was created
+        mainview.show_main_view(frame, body, user_info)
+      else:
+        text_error.original_widget = urwid.AttrWrap( urwid.Text(query_info.query_status), 'error')
     else:
-      text_error.original_widget = urwid.AttrWrap( urwid.Text(query_info.query_status), 'error')
+      text_error.original_widget = urwid.AttrWrap( urwid.Text(u"You have enter in a query."), 'error')
 
   #variables to hold text to show user for login view
   text_1 = urwid.Text(u"Enter a SQL query to run below:")

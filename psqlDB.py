@@ -31,7 +31,6 @@ class Psql:
     try:
       conn = psycopg2.connect(database=db, user=un, password=pw)
       #conn = psycopg2.connect(database="test1", user="postgres", password="cs419db")
-      #cur = conn.cursor()
       return conn
     except psycopg2.OperationalError:
       return -1
