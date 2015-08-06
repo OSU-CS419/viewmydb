@@ -50,7 +50,7 @@ class Psql:
       cur.close()
       return names
     except:
-      cur.cose()
+      cur.close()
       return -1
 
   # takes psycopg2 cursor object
