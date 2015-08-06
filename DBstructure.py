@@ -7,9 +7,6 @@ NOTES
 -----
 This module builds the widget to show the structure information for a database.
 
-Note: as of right now, it just has harcoded text and doesn't actually pull data
-from the database. This will need to be added.
-
 """
 
 def show_db_structure(user_info):
@@ -20,10 +17,12 @@ def show_db_structure(user_info):
   #get table names and size
   db_tableinfo = user_info.db_obj.getdb_tableinfo(user_info.db_conn)
 
+  #building out list of table name text widgets
   table_names_list = []
   for x in db_tableinfo:
     table_names_list.append(urwid.Text(x[0]))
   
+  #building out list of table size text widgets
   table_sizes_list = []
   for x in db_tableinfo:
     table_sizes_list.append(urwid.Text(x[1]))
@@ -46,6 +45,7 @@ def show_db_structure(user_info):
   table_sizes = urwid.LineBox( urwid.Pile(table_sizes_list)
     , title="Size")
 
+  #main widget for view
   structure_view = urwid.Padding( urwid.Pile( [
     urwid.Text(u"Database Info:"),
     urwid.Columns([
