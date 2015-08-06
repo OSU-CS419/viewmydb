@@ -35,7 +35,7 @@ conn = db.connectdb("test1", "postgres", "cs419db")
 if conn == -1:
   print "error connecting; please check dbname, username, password"
 else:
-  get all table names
+  #get all table names
   tablenames = db.gettables(conn)
   print "All tables in selected DB"
   print tablenames
