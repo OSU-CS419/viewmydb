@@ -76,12 +76,12 @@ def show_main_view(frame, body, user_info):
   #signal handler for the table 'browse' button
   def leftcol_btn_press_table_browse(button, tablename):
     main_body.original_widget = tablestructure.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename))
-    selected.set_text([u" Selected Table: ", button.get_label()])
+    selected.set_text([u" Selected Table: ", tablename])
 
   # signal handler for the table 'edit' button
   def leftcol_btn_press_table_edit(button, tablename):
     main_body.original_widget = tablestructure.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename))
-    selected.set_text([u" Selected Table: ", button.get_label()])
+    selected.set_text([u" Selected Table: ", tablename])
 
   #store database name that user is connected to
   db_name = user_info.db_name
