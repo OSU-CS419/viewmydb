@@ -49,7 +49,7 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column database button
   def leftcol_btn_press_db(button):
-    secondary_top.original_widget = urwid.Padding(blank)
+    secondary_top.original_widget = urwid.AttrWrap(urwid.Padding(blank), 'bg')
     main_top.original_widget = urwid.Padding( urwid.Columns([
       ('fixed', 13, db_structure_button),
       ('fixed', 3, urwid.Text(u"  ")),
@@ -68,13 +68,13 @@ def show_main_view(frame, body, user_info):
     table_rename_btn = urwid.AttrWrap( urwid.Button(rename_text), 'btnf', 'btn')
     table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text), 'btnf', 'btn')
     table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text), 'btnf', 'btn')
-    secondary_top.original_widget = urwid.Padding( urwid.Columns([
+    secondary_top.original_widget = urwid.AttrWrap(urwid.Padding( urwid.Columns([
       ('fixed', (len(rename_text) + 4), table_rename_btn),
       ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', (len(truncate_text) + 4), table_truncate_btn),
       ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', (len(drop_text) + 4), table_drop_btn)
-    ]), left=2, right=2)
+    ]), left=2, right=2), 'topmenu')
 
     db_table_browse_btn = urwid.AttrWrap( urwid.Button(u"Browse", leftcol_btn_press_table_browse, button.get_label()), 'btnf', 'btn')
     db_table_edit_btn = urwid.AttrWrap( urwid.Button(u"Edit", leftcol_btn_press_table_edit, button.get_label()), 'btnf', 'btn')
