@@ -75,7 +75,7 @@ class Psql:
   def getcolnames(self, conn, table):
     cur = conn.cursor()
     try:
-      SQL = "SELECT DISTINCT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
+      SQL = "SELECT column_name FROM information_schema.columns WHERE table_name = " + "'" + table + "';"
       cur.execute(SQL)
       data = cur.fetchall()
       columns = []
