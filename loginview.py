@@ -25,38 +25,29 @@ def create_main_view(user_info):
     if user_info.mysql == True:
       import mysqlDB as sqlDB	# for MySQL
       user_info.db_obj = sqlDB.MYsql()
-      dbflag = True
     elif user_info.psql == True:
       import psqlDB as sqlDB	# for PostgreSQL
       user_info.db_obj = sqlDB.Psql()
-      dbflag = True
-    else:
-      dbflag = False		# catches blank radio button input
 
     if (user_info.db_name and user_info.db_uname and user_info.db_pw):
-      if dbflag == True:
-        # connect to the db
-        user_info.db_conn = user_info.db_obj.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
+      # connect to the db
+      user_info.db_conn = user_info.db_obj.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
-        # if connection error returned
-        if user_info.db_conn == -1:
-          db_error_box.original_widget = urwid.AttrMap( urwid.Text
-          (u"Incorrect username, database name, or password. Please try again"),
-          'error', 'error')
-
-        # if good connection returned
-        else:
-          #build out and show the main app view on the screen
-          mainview.show_main_view(frame, body, user_info)
-
-      else:
+      # if connection error returned
+      if user_info.db_conn == -1:
         db_error_box.original_widget = urwid.AttrMap( urwid.Text
-          (u"Please select a database protocol above"),
-          'error', 'error')
+        (u"Incorrect username, database name, or password. Please try again"),
+        'error', 'error')
+
+      # if good connection returned
+      else:
+        #build out and show the main app view on the screen
+        mainview.show_main_view(frame, body, user_info)
+
     else:
       db_error_box.original_widget = urwid.AttrMap( urwid.Text
-          (u"Please provide a username, database name, and password"),
-          'error', 'error')
+        (u"Please enter your username, database name, and password"),
+        'error', 'error')
 
   #signal handler for radio buttons, stores input information from user
   def radio_change(self, state):
@@ -84,8 +75,10 @@ def create_main_view(user_info):
 
   #setting up radio elements for MySQL or PostgreSQL choice
   radio_list = []
+  user_info.psql = True		# default to PostgreSQL
+  user_info.mysql = False
   mysql_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"MySQL", False, on_state_change=radio_change), 'main_sel', 'main_self')
-  psql_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"PostgreSQL", False, on_state_change=radio_change), 'main_sel', 'main_self')
+  psql_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"PostgreSQL", True, on_state_change=radio_change), 'main_sel', 'main_self')
 
   #setting up the edit input widgets for database name and password
   db_uname_edit = urwid.Edit(u"Username: ", "")
