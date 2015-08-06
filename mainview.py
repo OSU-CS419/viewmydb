@@ -49,12 +49,32 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column database button
   def leftcol_btn_press_db(button):
+    main_top.original_widget = urwid.Padding( urwid.Columns([
+      ('fixed', 13, db_structure_button),
+      ('fixed', 3, urwid.Text(u"  ")),
+      ('fixed', 16, db_createtable_button)
+    ]), left=2, right=2)
+
     main_body.original_widget = DBstructure.show_db_structure(user_info)
     selected.set_text([u" Selected Database: ", button.get_label()])
 
   #signal handler for left column widget buttons
   def leftcol_btn_press_table(button):
-    main_body.original_widget = tablestructure.showTables(user_info.db_obj.getcolnames(user_info.db_conn, button.get_label()), user_info.db_obj.allrows(user_info.db_conn, button.get_label()))
+    db_table_browse_btn = urwid.AttrWrap( urwid.Button(u"Browse", leftcol_btn_press_table_browse, button.get_label()), 'btnf', 'btn')
+    
+    main_top.original_widget = urwid.Padding( urwid.Columns([
+      ('fixed', 13, db_structure_button),
+      ('fixed', 3, urwid.Text(u"   ")),
+      ('fixed', 8, urwid.Button(u"Edit")),
+      ('fixed', 3, urwid.Text(u"  ")),
+      ('fixed', 10, db_table_browse_btn),
+    ]), left=2, right=2)
+
+    main_body.original_widget = DBstructure.show_db_structure(user_info)
+    selected.set_text([u" Selected Table: ", button.get_label()])
+
+  def leftcol_btn_press_table_browse(button, tablename):
+    main_body.original_widget = tablestructure.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename))
     selected.set_text([u" Selected Table: ", button.get_label()])
 
   #store database name that user is connected to
