@@ -104,7 +104,7 @@ def create_main_view(user_info):
       urwid.Pile([
         text_mainbody_1,
         blank, 
-        urwid.Padding( urwid.Pile([mysql_radio, psql_radio]), width=14, left=5),
+        urwid.Padding( urwid.Pile([psql_radio, mysql_radio]), width=14, left=5),
         blank,
         text_mainbody_2,
         blank,
