@@ -1,7 +1,17 @@
 #!/usr/bin/python
-import mysqlDB as sqlDB
-#import psqlDB as sqlDB
+
+#toggle this to switch b/w psql and mysql
+postgres = True
+
+if postgres:
+  import psqlDB
+  db = psqlDB.Psql()
+else:
+  import mysqlDB
+  db = mysqlDB.MYsql()
+
 import tablestructure
+
 
 """
 NOTES
@@ -19,24 +29,27 @@ can just run 'python tests.py' to run this file
 # tests
 # ------------------------------------------------
 #connectdb w/ dbname, username, pass
-cur = sqlDB.connectdb("testdb", "root", "mypassword")
-#cur = sqlDB.connectdb("postgres", "postgres", "cs419db")
-if cur == -1:
+#conn = db.connectdb("testdb", "root", "mypassword")
+conn = db.connectdb("postgres", "postgres", "cs419db")
+
+if conn == -1:
   print "error connecting; please check dbname, username, password"
 else:
   # get all table names
-  tablenames = sqlDB.gettables(cur)
+  tablenames = db.gettables(conn)
   print "All tables in selected DB"
   print tablenames
 
   # get all column names
-  cols = sqlDB.getcolnames(cur, tablenames[1])
+  cols = db.getcolnames(conn, tablenames[1])
   print "All column names in first DB"
   print cols
 
   # get all table rows
-  rows = sqlDB.allrows(cur, tablenames[1])
+  rows = db.allrows(conn, tablenames[1])
   print "All rows in first DB"
   print rows
 
   print "-------------------------------------------"
+
+conn.close()
