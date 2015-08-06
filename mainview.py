@@ -49,12 +49,12 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column database button
   def leftcol_btn_press_db(button):
-    secondary_top.original_widget = urwid.AttrWrap(urwid.Padding(blank), 'bg')
-    main_top.original_widget = urwid.Padding( urwid.Columns([
+    secondary_top.original_widget = urwid.AttrWrap(urwid.Padding(blank), 'bg')   
+    main_top.original_widget = urwid.Columns([
       ('fixed', 13, db_structure_button),
       ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', 16, db_createtable_button)
-    ]), left=2, right=2)
+    ])
 
     main_body.original_widget = DBstructure.show_db_structure(user_info)
     selected.set_text([u" Selected Database: ", button.get_label()])
@@ -78,13 +78,13 @@ def show_main_view(frame, body, user_info):
 
     db_table_browse_btn = urwid.AttrWrap( urwid.Button(u"Browse", leftcol_btn_press_table_browse, button.get_label()), 'btnf', 'btn')
     db_table_edit_btn = urwid.AttrWrap( urwid.Button(u"Edit", leftcol_btn_press_table_edit, button.get_label()), 'btnf', 'btn')
-    main_top.original_widget = urwid.Padding( urwid.Columns([
+    main_top.original_widget = urwid.Columns([
       ('fixed', 13, db_structure_button),
       ('fixed', 3, urwid.Text(u"   ")),
       ('fixed', 8, db_table_edit_btn),
       ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', 10, db_table_browse_btn),
-    ]), left=2, right=2)
+    ])
 
     main_body.original_widget = DBstructure.show_db_structure(user_info)
     selected.set_text([u" Selected Table: ", button.get_label()])
@@ -195,7 +195,12 @@ def show_main_view(frame, body, user_info):
   
   #this is the widget that acts as the body of the frame and is a ListBox
   listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
+  
+  print listbox.focus_position
+
   listbox = urwid.AttrWrap(listbox, 'bg')
+
+  
 
   #this substitutes in the old body for this new listbox body
   body.original_widget = listbox
