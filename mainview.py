@@ -195,13 +195,8 @@ def show_main_view(frame, body, user_info):
   
   #this is the widget that acts as the body of the frame and is a ListBox
   listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
-  
-  print listbox.focus_position
-
+  listbox.set_focus(6)
   listbox = urwid.AttrWrap(listbox, 'bg')
-
-  
 
   #this substitutes in the old body for this new listbox body
   body.original_widget = listbox
-
