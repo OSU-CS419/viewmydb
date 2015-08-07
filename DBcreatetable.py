@@ -86,13 +86,20 @@ def second_createtable(frame, body, main_body, user_info, table_info):
   table_info.count = 0 #holds count on what attribute is being edited
 
   text_1 = urwid.Text([u"Creating Table: ", table_info.table_name])
-  edit_num = urwid.Text([u"Now editing attribute number: ", str(table_info.count + 1)])
+  edit_num = urwid.Text([u"Now editing attribute number: ", str(table_info.count + 1), ' / ', str(table_info.table_fields)])
+
+  #clear out query string first
+  table_info.query_string = ""
 
   #start creating the query string
   table_info.query_string += 'CREATE TABLE ' + table_info.table_name + ' (\n'
 
   #error box
   error_box = urwid.AttrMap( urwid.Text(u""), 'main_sel')
+
+  #signal handler for try again button
+  def try_again(button):
+    second_createtable(frame, body, main_body, user_info, table_info)
 
   #signal handler for the next attribute button
   def next_atr(button):
@@ -195,7 +202,14 @@ def second_createtable(frame, body, main_body, user_info, table_info):
       mainview.show_main_view(frame, body, user_info)
     else: 
       #query failed, show error message
-      error_box.original_widget = urwid.AttrWrap( urwid.Text(query_status), 'error')
+      error_box.original_widget = urwid.AttrWrap( urwid.Text(
+        [u"Query Failed. Select 'Try Again' below to re-enter attribute information, or 'Create Table' above to start over.\n\n", query_status, "\nQUERY:  ", table_info.query_string]), 'error')
+
+      #clear out create table button and make it try again button
+      table_create_btn.original_widget = urwid.AttrWrap( urwid.Button(u"Try Again", try_again), 'main_sel', 'main_self')
+
+      #set focus to button
+
 
   #controls the looping nature of the repetivie process of entering in data for attributes
   def next_form():
@@ -209,7 +223,7 @@ def second_createtable(frame, body, main_body, user_info, table_info):
     attribute_box.focus_position = 2
 
     #change attribute count to show current attribute
-    edit_num.set_text([u"Now editing attribute number: ", str(table_info.count + 1)])
+    edit_num.set_text([u"Now editing attribute number: ", str(table_info.count + 1), ' / ', str(table_info.table_fields)])
 
     #keep processing data
     table_info.query_string += ',\n'
@@ -233,7 +247,7 @@ def second_createtable(frame, body, main_body, user_info, table_info):
     unique_radio,
     none_radio,
     blank,
-    urwid.Padding(atr_next_btn, left=15, width=8)
+    urwid.Padding(atr_next_btn, left=15, width=10)
   ])
 
   create_attribute = urwid.WidgetPlaceholder( urwid.Padding(
