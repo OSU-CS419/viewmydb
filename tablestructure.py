@@ -41,7 +41,7 @@ def showTables(colnames, rowdata):
       urwid.Text(u""),
     ])
     # make a linebox with the Pile and the columnname
-    mylinebox = (urwid.LineBox((mypile), title=colnames[i]))
+    mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))
     columns.append(mylinebox)			# append the linebox to the list of columns
 
   #signal handler for the more button
