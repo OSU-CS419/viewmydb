@@ -56,6 +56,17 @@ def show_main_view(frame, body, user_info):
       ('fixed', 16, db_createtable_button)
     ])
 
+    main_padding.original_widget = urwid.Pile([
+      #tool bar menu
+      urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+      urwid.AttrWrap( main_top, 'topmenu'),
+      urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+      blank,
+      blank,
+      #main body
+      main_body
+    ])
+
     main_body.original_widget = DBstructure.show_db_structure(user_info)
     selected.set_text([u" Selected Database: ", button.get_label()])
 
@@ -84,6 +95,17 @@ def show_main_view(frame, body, user_info):
       ('fixed', 8, db_table_edit_btn),
       ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', 10, db_table_browse_btn),
+    ])
+
+    main_padding.original_widget = urwid.Pile([
+      #tool bar menu
+      urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+      urwid.AttrWrap( main_top, 'topmenu'),
+      urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+      urwid.AttrWrap( secondary_top, 'topmenu'),
+      urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+      #main body
+      main_body
     ])
 
     main_body.original_widget = DBstructure.show_db_structure(user_info)
@@ -162,6 +184,18 @@ def show_main_view(frame, body, user_info):
 
   #--------------------------------------------------------------------
   #This is creating the listbox that makes up the body of the main frame
+
+  main_padding = urwid.Padding( urwid.Pile([
+    #tool bar menu
+    urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+    urwid.AttrWrap( main_top, 'topmenu'),
+    urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
+    blank,
+    blank,
+    #main body
+    main_body
+  ]), left=0, right=0)
+
   #This listbox is the main body of the UI
   listbox_content = [
     blank,
@@ -177,18 +211,7 @@ def show_main_view(frame, body, user_info):
       #left column menu
       ('fixed', 17, left_column),
       #right column tool bar and main body
-      urwid.AttrWrap( urwid.Padding( urwid.Pile([
-            #tool bar menu
-            urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
-            urwid.AttrWrap( main_top, 'topmenu'),
-            urwid.AttrWrap( urwid.Divider("-"), 'topmenu'),
-            urwid.AttrWrap( secondary_top, 'bg'),
-            blank,
-            #main body
-            main_body
-          ])
-        , left=0, right=0)
-      , 'body')
+      urwid.AttrWrap(main_padding, 'body')
     ])
   ]
   #END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
