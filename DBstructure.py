@@ -13,7 +13,7 @@ def show_db_structure(user_info):
   #build out the table that shows the db structure stats
   #get db info
   db_info = user_info.db_obj.getdbinfo(user_info.db_conn, user_info.db_name)
-  
+
   #get table names and size
   db_tableinfo = user_info.db_obj.getdb_tableinfo(user_info.db_conn)
 

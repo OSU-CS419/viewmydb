@@ -97,6 +97,7 @@ class Psql:
       cur.close()
       return 1
     except psycopg2.Error as e:
+      conn.commit()
       cur.close()
       return e.pgerror
 
@@ -140,7 +141,3 @@ class Psql:
     except:
       cur.close()
       return -1
-
-# SELECT relname as "Table",
-# pg_size_pretty(pg_total_relation_size(relid)) As "Size"
-# FROM pg_catalog.pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;    
