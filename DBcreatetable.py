@@ -205,11 +205,13 @@ def second_createtable(frame, body, main_body, user_info, table_info):
       error_box.original_widget = urwid.AttrWrap( urwid.Text(
         [u"Query Failed. Select 'Try Again' below to re-enter attribute information, or 'Create Table' above to start over.\n\n", query_status, "\nQUERY:  ", table_info.query_string]), 'error')
 
+      #if attributes = 1, next button will still be there
+      if table_info.table_fields == 1:
+        attribute_box.focus_position = 2  
+        atr_next_btn.original_widget = urwid.AttrWrap( urwid.Text(u""), 'main_sel')
+           
       #clear out create table button and make it try again button
       table_create_btn.original_widget = urwid.AttrWrap( urwid.Button(u"Try Again", try_again), 'main_sel', 'main_self')
-
-      #set focus to button
-
 
   #controls the looping nature of the repetivie process of entering in data for attributes
   def next_form():
