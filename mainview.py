@@ -77,7 +77,7 @@ def show_main_view(frame, body, user_info):
     truncate_text = "Truncate '" + tablename + "'"
     drop_text = "Drop '" + tablename + "'"
     table_rename_btn = urwid.AttrWrap( urwid.Button(rename_text), 'btnf', 'btn')
-    table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text, btn_press_table_truncate, tablename), 'btnf', 'btn')
+    table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text, btn_press_table_truncate, button), 'btnf', 'btn')
     table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text), 'btnf', 'btn')
     secondary_top.original_widget = urwid.AttrWrap(urwid.Padding( urwid.Columns([
       ('fixed', (len(rename_text) + 4), table_rename_btn),
@@ -122,11 +122,11 @@ def show_main_view(frame, body, user_info):
     selected.set_text([u" Selected Table: ", tablename])
 
   #signal handler for table 'truncate' button
-  def btn_press_table_truncate(button, tablename):
+  def btn_press_table_truncate(button, tablebutton):
     # execute the truncate query
-    user_info.db_obj.truncate_table(user_info.db_conn, tablename)
+    user_info.db_obj.truncate_table(user_info.db_conn, tablebutton.get_label())
     # return to db view (can't address table button with current code)
-    leftcol_btn_press_db(db_button)
+    leftcol_btn_press_table(tablebutton)
 
   #store database name that user is connected to
   db_name = user_info.db_name
