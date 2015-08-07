@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import urwid
-
+import mainview
 
 """
 NOTES
@@ -23,7 +23,7 @@ class CreateTableInfo:
     self.atr_unique = False
     self.atr_none = True
 
-def show_db_createtable(main_body, user_info):
+def show_db_createtable(frame, body, main_body, user_info):
   #used to easily insert a blank line widget
   blank = urwid.Divider()
 
@@ -42,12 +42,11 @@ def show_db_createtable(main_body, user_info):
       text_error.original_widget = urwid.AttrWrap( urwid.Text(u"The max number of fields is 20"), 'error')
     else:
       #user input was correct, go to next view
-      second_createtable(main_body, user_info, table_info)  
+      second_createtable(frame, body, main_body, user_info, table_info)  
 
   #signal handler for text input, stores input information from user
   def edit_change_event(self, text):
     table_info.table_name = text
-
 
   #variables to hold text to show user for login view
   text_error = urwid.AttrWrap( urwid.Text(u""), 'body')
@@ -82,11 +81,9 @@ def show_db_createtable(main_body, user_info):
   return create_table
 
 
-def second_createtable(main_body, user_info, table_info):
+def second_createtable(frame, body, main_body, user_info, table_info):
   blank = urwid.Divider()
   table_info.count = 0 #holds count on what attribute is being edited
-
-  f = open('querystring', 'w')
 
   text_1 = urwid.Text([u"Creating Table: ", table_info.table_name])
   edit_num = urwid.Text([u"Now editing attribute number: ", str(table_info.count + 1)])
@@ -96,14 +93,6 @@ def second_createtable(main_body, user_info, table_info):
 
   #error box
   error_box = urwid.AttrMap( urwid.Text(u""), 'main_sel')
-
-  #signal handler for create button
-  def table_create(button):
-    print "test"
-
-  #create button
-  table_create_btn = urwid.WidgetPlaceholder( urwid.Text(u""))
-  # table_create_btn = urwid.AttrWrap( urwid.Button(u"Create", table_create), 'main_sel', 'main_self')
 
   #signal handler for the next attribute button
   def next_atr(button):
@@ -126,12 +115,12 @@ def second_createtable(main_body, user_info, table_info):
       #increment count to reflect new addition of data
       table_info.count += 1
       
-      #call function to bring up next form
-      next_form()
-
-      
-
-
+      if table_info.count < table_info.table_fields:
+        #call function to bring up next form
+        next_form()
+      else:
+        #call function to execute create table query
+        create_table()
 
   #next button
   atr_next_btn = urwid.AttrWrap( urwid.Button(u"Next", next_atr), 'main_sel', 'main_self')
@@ -189,6 +178,25 @@ def second_createtable(main_body, user_info, table_info):
   unique_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"Unique", False, on_state_change=radio_change), 'main_sel', 'main_self')
   none_radio = urwid.AttrWrap( urwid.RadioButton(radio_list, u"None", True, on_state_change=radio_change), 'main_sel', 'main_self')
 
+  #create button placeholder
+  table_create_btn = urwid.WidgetPlaceholder( urwid.Text(u""))
+
+  #signal handler for create button
+  def create_table():
+    table_info.query_string += '\n);'
+    
+    #run query
+    query_status = user_info.db_obj.runquery(user_info.db_conn, table_info.query_string)
+
+    if query_status == 1:
+      #query was successful, show success message and change view
+      frame.footer = urwid.AttrWrap( urwid.Text(u" Table created successfully"), 'header')
+
+      mainview.show_main_view(frame, body, user_info)
+    else: 
+      #query failed, show error message
+      error_box.original_widget = urwid.AttrWrap( urwid.Text(query_status), 'error')
+
   #controls the looping nature of the repetivie process of entering in data for attributes
   def next_form():
     #clear form
@@ -198,6 +206,7 @@ def second_createtable(main_body, user_info, table_info):
     none_radio.set_state(True)
 
     #change focus to name input field
+    attribute_box.focus_position = 2
 
     #change attribute count to show current attribute
     edit_num.set_text([u"Now editing attribute number: ", str(table_info.count + 1)])
@@ -208,13 +217,24 @@ def second_createtable(main_body, user_info, table_info):
     if table_info.count == table_info.table_fields - 1:
       #this is the last attribute to edit
       #remove next button and replace with create button
-      print "Test"
+      atr_next_btn.original_widget = urwid.AttrWrap( urwid.Text(u""), 'main_sel')
+      table_create_btn.original_widget = urwid.AttrWrap( urwid.Button(u"Create", next_atr), 'main_sel', 'main_self')
 
-
-      
-      
-      
-
+  attribute_box = urwid.Pile([
+    error_box,
+    blank,
+    atr_name_edit,
+    blank,
+    atr_type_edit,
+    blank,
+    null_checkbox,
+    blank,
+    primarykey_radio,
+    unique_radio,
+    none_radio,
+    blank,
+    urwid.Padding(atr_next_btn, left=15, width=8)
+  ])
 
   create_attribute = urwid.WidgetPlaceholder( urwid.Padding(
     urwid.Pile([
@@ -222,21 +242,7 @@ def second_createtable(main_body, user_info, table_info):
       blank,
       edit_num,
       blank,
-      urwid.LineBox( urwid.Pile([
-        error_box,
-        blank,
-        atr_name_edit,
-        blank,
-        atr_type_edit,
-        blank,
-        null_checkbox,
-        blank,
-        primarykey_radio,
-        unique_radio,
-        none_radio,
-        blank,
-        urwid.Padding(atr_next_btn, left=15, width=8)
-      ])),
+      urwid.LineBox(attribute_box),
       blank,
       urwid.Padding(table_create_btn, left=5, width=10)
     ]), left=5, right=5))

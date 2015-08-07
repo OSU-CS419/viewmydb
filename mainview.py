@@ -165,7 +165,7 @@ def show_main_view(frame, body, user_info):
 
   def db_createtable_btn_press(button):
     #create a table in the database, if error message, show error
-    main_body.original_widget = DBcreatetable.show_db_createtable(main_body, user_info)
+    main_body.original_widget = DBcreatetable.show_db_createtable(frame, body, main_body, user_info)
 
   text_maintop = u" This is the top section of the main body"
   db_structure_button = urwid.AttrWrap( urwid.Button(u"Structure", db_structure_btn_press), 'btnf', 'btn')
