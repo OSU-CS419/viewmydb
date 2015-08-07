@@ -129,7 +129,17 @@ class Psql:
       cur.close()
       return -1
 
-
+  def truncate_table(self, conn, tablename):
+    cur = conn.cursor()
+    try:
+      SQL = "TRUNCATE " + str(tablename)
+      cur.execute(SQL)
+      conn.commit()
+      cur.close()
+      return 1
+    except:
+      cur.close()
+      return -1
 
 # SELECT relname as "Table",
 # pg_size_pretty(pg_total_relation_size(relid)) As "Size"
