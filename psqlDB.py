@@ -153,3 +153,15 @@ class Psql:
     except:
         cur.close()
         return -1
+
+  def rename_table(self, conn, tablename, newname):
+    cur = conn.cursor()
+    try:
+        SQL = "ALTER TABLE " + str(tablename) + " RENAME TO " + str(newname)
+        cur.execute(SQL)
+        conn.commit()
+        cur.close()
+        return 1
+    except:
+        cur.close()
+        return -1
