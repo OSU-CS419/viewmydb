@@ -49,6 +49,23 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for left column database button
   def leftcol_btn_press_db(button):
+    # update the list of tables and associated buttons
+    db_tables = user_info.db_obj.gettables(user_info.db_conn)
+    table_buttons = urwid.Pile(
+      [urwid.AttrWrap( urwid.Button(txt, leftcol_btn_press_table), 'btn', 'btnf') for txt in db_tables ])
+    left_column.original_widget = urwid.Padding (urwid.Pile([
+          blank,
+          urwid.Text(text_leftcol1_1, align='center'),
+          db_button,
+          urwid.Divider("="),
+          blank,
+          urwid.Text(text_leftcol2_1, align='center'),
+          table_buttons,
+          blank
+        ])
+      , left=1, right=2)
+
+    # update the top menu button selection
     secondary_top.original_widget = urwid.AttrWrap(urwid.Padding(blank), 'bg')   
     main_top.original_widget = urwid.Columns([
       ('fixed', 13, db_structure_button),
@@ -78,7 +95,7 @@ def show_main_view(frame, body, user_info):
     drop_text = "Drop '" + tablename + "'"
     table_rename_btn = urwid.AttrWrap( urwid.Button(rename_text), 'btnf', 'btn')
     table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text, btn_press_table_truncate, button), 'btnf', 'btn')
-    table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text), 'btnf', 'btn')
+    table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text, btn_press_table_drop, button.get_label()), 'btnf', 'btn')
     secondary_top.original_widget = urwid.AttrWrap(urwid.Padding( urwid.Columns([
       ('fixed', (len(rename_text) + 4), table_rename_btn),
       ('fixed', 3, urwid.Text(u"  ")),
@@ -125,8 +142,14 @@ def show_main_view(frame, body, user_info):
   def btn_press_table_truncate(button, tablebutton):
     # execute the truncate query
     user_info.db_obj.truncate_table(user_info.db_conn, tablebutton.get_label())
-    # return to db view (can't address table button with current code)
+    # return to table view
     leftcol_btn_press_table(tablebutton)
+
+  def btn_press_table_drop(button, tablename):
+    # execute the drop query
+    user_info.db_obj.drop_table(user_info.db_conn, tablename)
+    # return to db view
+    leftcol_btn_press_db(db_button)
 
   #store database name that user is connected to
   db_name = user_info.db_name

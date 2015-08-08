@@ -141,3 +141,15 @@ class Psql:
     except:
       cur.close()
       return -1
+
+  def drop_table(self, conn, tablename):
+    cur = conn.cursor()
+    try:
+        SQL = "DROP TABLE " + str(tablename)
+        cur.execute(SQL)
+        conn.commit()
+        cur.close()
+        return 1
+    except:
+        cur.close()
+        return -1
