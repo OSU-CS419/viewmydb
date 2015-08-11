@@ -10,7 +10,7 @@ This module builds the widget to show the edit view for the table.
 
 """
 
-class EditTableInfo(object):
+class EditTableInfo:
   def __init__(self):
     self.rename_name = ""
 
@@ -57,7 +57,8 @@ def show_table_edit(frame, body, main_body, user_info, tablename):
   table_rename_btn = urwid.AttrWrap( urwid.Button(u"Rename", rename_btn_press), 'btnf', 'btn')
 
   #Show the edit table as well
-
+  #generate table with an edit select widget so user can edit a row
+  #edit options include delete row
 
 
 
