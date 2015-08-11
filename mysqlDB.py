@@ -113,26 +113,31 @@ class MYsql:
   def getdb_tableinfo(self, conn):
     cur = conn.cursor()
     name = conn.ourdbname
-#    try:
-    cur.execute("""SELECT table_name AS "Table", 
-    round(((data_length + index_length) / 1024)) AS "Size" 
-    FROM information_schema.TABLES 
-    WHERE table_schema = (%s)
-    ORDER BY (data_length + index_length) DESC;""", (name,))
-    data = cur.fetchall()
-    cur.close()
-#      filename = "testingfile.txt"
-#      target_file = open(filename, 'w')
-    names = []
-    for table in data:
-      names.append(table)
-      size = table[1]
-      names[1] = str(size) + " kB"
-#        target_file.write(element)
-    return data
-#    except:
-    cur.close()
-    return -1
+    try:
+      cur.execute("""SELECT table_name AS "Table", 
+      round(((data_length + index_length) / 1024)) AS "Size" 
+      FROM information_schema.TABLES 
+      WHERE table_schema = (%s)
+      ORDER BY (data_length + index_length) DESC;""", (name,))
+      data = cur.fetchall()
+      cur.close()
+
+      # put it in a list instead of a tuple
+      info = []
+      row = []
+      for table in data:
+        # cast as a string
+        size = str(table[1]) + " kB"
+        name = str(table[0])
+        row.append(name)	# append the name
+        row.append(size)	# append the size
+        info.append(row)	# append that row
+        row = []		# empty the row
+
+      return info
+    except:
+      cur.close()
+      return -1
   
   # gets info about the table
   def gettableinfo(self, conn, tablename):
