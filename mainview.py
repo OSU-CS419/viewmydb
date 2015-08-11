@@ -92,15 +92,11 @@ def show_main_view(frame, body, user_info):
   #signal handler for left column table buttons
   def leftcol_btn_press_table(button):
     tablename = button.get_label()
-    rename_text = "Rename '" + tablename + "'"
     truncate_text = "Truncate '" + tablename + "'"
     drop_text = "Drop '" + tablename + "'"
-    table_rename_btn = urwid.AttrWrap( urwid.Button(rename_text), 'btnf', 'btn')
     table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text, btn_press_table_truncate, button), 'btnf', 'btn')
     table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text, btn_press_table_drop, button.get_label()), 'btnf', 'btn')
     secondary_top.original_widget = urwid.AttrWrap(urwid.Padding( urwid.Columns([
-      ('fixed', (len(rename_text) + 4), table_rename_btn),
-      ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', (len(truncate_text) + 4), table_truncate_btn),
       ('fixed', 3, urwid.Text(u"  ")),
       ('fixed', (len(drop_text) + 4), table_drop_btn)
