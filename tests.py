@@ -1,7 +1,11 @@
 #!/usr/bin/python
 
-#toggle this to switch b/w psql and mysql
-postgres = True
+# add your credentials to credentials.py
+import credentials as creds
+
+postgres = ""
+
+#postgres = True #comment this line for mysql, uncomment for psql
 
 if postgres:
   import psqlDB
@@ -29,8 +33,10 @@ can just run 'python tests.py' to run this file
 # tests
 # ------------------------------------------------
 #connectdb w/ dbname, username, pass
-#conn = db.connectdb("testdb", "root", "mypassword")
-conn = db.connectdb("test1", "postgres", "cs419db")
+if postgres:
+  conn = db.connectdb(creds.psqldbname, creds.psqluname, creds.psqlpass)
+else:
+  conn = db.connectdb(creds.mysqldbname, creds.mysqluname, creds.mysqlpass)
 
 if conn == -1:
   print "error connecting; please check dbname, username, password"
@@ -41,22 +47,22 @@ else:
   print tablenames
 
   # get all column names
-  cols = db.getcolnames(conn, tablenames[1])
+  cols = db.getcolnames(conn, tablenames[0])
   print "\nAll column names in first DB"
   print cols
 
   # get all table rows
-  rows = db.allrows(conn, tablenames[1])
+  rows = db.allrows(conn, tablenames[0])
   print "\nAll rows in first DB"
   print rows
 
   # testing run sql
-  data = db.runquery(conn, "select * from moretest;")
-  print "\nData from run sql query"
-  print data
+#  data = db.runquery(conn, "select * from moretest;")
+#  print "\nData from run sql query"
+#  print data
 
   # get db info
-  info = db.getdbinfo(conn, "test1")
+  info = db.getdbinfo(conn, "testdb")
   print "\nDatabase info"
   print info
 
