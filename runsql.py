@@ -17,6 +17,11 @@ class Qinfo:
     self.query_text = None
     self.query_status = None
 
+class Tracking:
+  def __init__(self):
+    self.start = 0
+    self.end = 15
+
 def show_runsql(frame, body, user_info):
   #used to easily insert a blank line widget
   blank = urwid.Divider()
@@ -33,48 +38,103 @@ def show_runsql(frame, body, user_info):
           col.append(urwid.Text(str(row[i])))
         cols.append(col)
 
-    return cols  
-
-  #generates tables of 15 starting at a certain row
-  def generate_table(start, end):
-    columns = []          # empty columns list
-    for i in range (0, len(colnames)):    # for each column
-      if widget_lists:        # if list not empty
-        include_list = []     # list to hold just the widgets to make table out of
-        for y in range(start, end):
-          include_list.append(widget_lists[i][y])
-        mypile = urwid.Pile(include_list) # make a Pile with the list of widgets
-      else:
-        mypile = urwid.Pile([     # a blank widget to fill up some space
-        urwid.Text(u""),
-      ])
-
-      # make a linebox with the Pile and the columnname
-      if i == len(colnames) - 1:
-        mylinebox = (urwid.LineBox((mypile), title=colnames[i]))
-      else:
-        mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))  
-
-      columns.append(mylinebox)     # append the linebox to the list of columns
-
-    return urwid.Columns(columns)
+    return cols
 
   #do all of the work to show the select query
-  def show_select_results(data):
-    #clear out previous query text
+  def show_select_results(data, text):
+    location = Tracking()
     row_length = len(data)
+    col_length = len(data[0])
     widget_lists = splitTable(data)    # get a list of a list of widgets
 
+    #clear out previous query text
+    sql_edit.original_widget.set_edit_text(u"")
 
+    #generates tables of 15 starting at a certain row
+    def generate_table(start, end):
+      columns = []          # empty columns list
+      for i in range (0, col_length):    # for each column
+        if widget_lists:        # if list not empty
+          include_list = []     # list to hold just the widgets to make table out of
+          for y in range(start, end):
+            include_list.append(widget_lists[i][y])
+          mypile = urwid.Pile(include_list) # make a Pile with the list of widgets
+        else:
+          mypile = urwid.Pile([     # a blank widget to fill up some space
+          urwid.Text(u""),
+        ])
 
+        # make a linebox with the Pile and the columnname
+        if i == col_length - 1:
+          mylinebox = urwid.LineBox(mypile)
+        else:
+          mylinebox = urwid.LineBox((mypile), rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
 
+        columns.append(mylinebox)     # append the linebox to the list of columns
 
+      return urwid.Columns(columns)
+    
+    #signal handler for the more button
+    def more_btn_press(button):
+      if location.end < row_length - 15:
+        #can still render a full set of 15 rows
+        location.end += 15
+        location.start += 15
+        table.original_widget = generate_table(location.start, location.end)
+        count.set_text([u"Viewing rows ", str(location.start + 1), " - ", str(location.end)])
+      elif location.end < row_length:
+        #last chuck of data to show
+        location.start = location.end
+        location.end = row_length
+        table.original_widget = generate_table(location.start, location.end)
+        count.set_text([u"Viewing rows ", str(location.start + 1), " - ", str(location.end)])
 
+    #signal handler for the less button
+    def less_btn_press(button):
+      if location.start >= 15:
+        location.end = location.start
+        location.start = location.end - 15
+        table.original_widget = generate_table(location.start, location.end)
+        count.set_text([u"Viewing rows ", str(location.start + 1), " - ", str(location.end)])
 
+    #more button to show more results
+    #only show if results are greater than a certain amount
+    more_btn = urwid.AttrWrap( urwid.Button(u"More", more_btn_press), 'btnf', 'btn')
+    more_btn = urwid.Padding(more_btn, width=8)
 
+    #less button to go back
+    less_btn = urwid.AttrWrap( urwid.Button(u"Less", less_btn_press), 'btnf', 'btn')
+    less_btn = urwid.Padding(less_btn, width=8)
 
+    select_text_1 = urwid.Text(["The results from the following SELECT query are below.", "\n\nQUERY: ", text])
+    select_text_2 = urwid.Text([u"Total Rows: ", str(row_length)])
+    count = urwid.Text([u"Viewing rows ", str(location.start + 1), " - ", str(location.end)])
 
+    if row_length < 15:
+      #render just the data available
+      table = generate_table(0, row_length)
 
+      #clear out more and less buttons
+      more_btn.original_widget = urwid.Text(u"")
+      less_btn.original_widget = urwid.Text(u"")
+    else:
+      table = urwid.WidgetPlaceholder(generate_table(location.start, location.end))
+
+    #build out selection results view
+    select_results.original_widget = urwid.Pile([
+      select_text_1,
+      blank,
+      select_text_2,
+      count,
+      blank,
+      table,
+      blank,
+      urwid.Columns([
+        ('fixed', 8, less_btn),
+        ('fixed', 3, urwid.Text(u"   ")),
+        ('fixed', 8, more_btn)
+      ])
+    ])
 
   #signal handler for text input, stores input information from user
   def edit_change_event(self, text):
@@ -82,6 +142,12 @@ def show_runsql(frame, body, user_info):
 
   #signal handler for the run button
   def run_btn_press(button):
+    #clear out any previous error messages
+    text_error.original_widget = urwid.AttrWrap( urwid.Text(u""), 'body')
+
+    #clear out any previous data results
+    select_results.original_widget = urwid.Text(u"")
+
     if query_info.query_text != None:
       #convert string to all uppercase to search for select
       query_info.query_text = query_info.query_text.upper()
@@ -96,8 +162,11 @@ def show_runsql(frame, body, user_info):
 
       if query_info.query_status['success'] == True:
         if select:
-          #query was a select query, show select data
-          show_select_results(query_info.query_status['data'])
+          if query_info.query_status['data']:
+            #query was a select query and has data, show select data
+            show_select_results(query_info.query_status['data'], query_info.query_text)
+          else:
+            text_error.original_widget = urwid.AttrWrap( urwid.Text([u" SELECT query did not return any data", "\n QUERY: ", query_info.query_text]), 'error')
         else:
           #show success message
           frame.footer = urwid.AttrWrap(urwid.Text(u" Query executed successfully"), 'header')
@@ -123,8 +192,8 @@ def show_runsql(frame, body, user_info):
   #run button
   runsql_btn = urwid.AttrWrap( urwid.Button(u"Run", run_btn_press), 'btnf', 'btn')
 
-  #The table that will hold the select query
-  table = urwid.WidgetPlaceholder( urwid.Text(u""))
+  #placeholder for any data results from SELECT query
+  select_results = urwid.WidgetPlaceholder( urwid.Text(u""))
 
   #This is the pile widget that holds all of the main body widgets
   runsql = urwid.WidgetPlaceholder(      
@@ -137,8 +206,7 @@ def show_runsql(frame, body, user_info):
         blank,
         urwid.Padding(runsql_btn, left=10, width=11),
         blank,
-        table
+        urwid.Padding(select_results, left=2)
       ]))
 
   return runsql
-

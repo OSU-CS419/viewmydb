@@ -101,8 +101,6 @@ class Psql:
       cur.close()
       return {'success':True, 'data':data}
     except psycopg2.Error as e:
-      print>>f, e
-      f.close()
       conn.commit()
       cur.close()
       return {'success':False, 'data':e.pgerror}
