@@ -62,9 +62,9 @@ def show_runsql(frame, body, user_info):
       urwid.Pile([
         urwid.Padding(text_error, left=5, width = 50),
         blank,
-        urwid.Padding(text_1, left=2),
-        urwid.Padding(text_2, left=2),
-        urwid.Padding( sql_edit, left=2, width=60),
+        urwid.Padding(text_1, left=5),
+        urwid.Padding(text_2, left=5),
+        urwid.Padding(sql_edit, left=2, right=2),
         blank,
         urwid.Padding(runsql_btn, left=10, width=11)
       ]))
