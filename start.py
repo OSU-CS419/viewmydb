@@ -11,18 +11,6 @@ NOTES
 These are the possible colors we can use:
 black, dark red, dark green, brown, dark blue, dark magenta, dark cyan, light gray
 
-This file is an attempt to remove the object oriented approach of having the 
-screen implementation be in a class. I don't think it makes much sense to use
-classes here as we aren't dealing with objects.
-So, I'm trying to make it a functional programming approach.
-
-!!!!
-I just read on urwid's site that urwid.AttrWrap is deprecated
-http://urwid.org/reference/deprecated.html
-it's not absolutely necessary to change all the previous ones right now, but
-moving forward we should use AttrMap
-http://urwid.org/reference/widget.html#attrmap
-
 """
 
 #This class is used to store all of the data pertaining to the database connection

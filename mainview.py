@@ -5,6 +5,8 @@ import DBstructure
 import DBcreatetable
 import runsql
 import TableBrowse
+import TableEdit
+
 
 """
 NOTES
@@ -135,8 +137,7 @@ def show_main_view(frame, body, user_info):
 
   # signal handler for the table 'edit' button
   def leftcol_btn_press_table_edit(button, tablename):
-    main_body.original_widget = TableBrowse.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename))
-    selected.set_text([u" Selected Table: ", tablename])
+    main_body.original_widget = TableEdit.show_table_edit(frame, body, main_body, user_info, tablename)
 
   #signal handler for table 'truncate' button
   def btn_press_table_truncate(button, tablebutton):

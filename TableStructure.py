@@ -10,6 +10,7 @@ This module builds the widget to show the structure information for a table.
 """
 
 def show_table_structure(user_info):
+  print "test"
   #build out table to show table stats
 
   #show attribute information

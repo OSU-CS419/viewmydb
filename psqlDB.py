@@ -162,6 +162,7 @@ class Psql:
         conn.commit()
         cur.close()
         return 1
-    except:
-        cur.close()
-        return -1
+    except psycopg2.Error as e:
+      conn.commit()
+      cur.close()
+      return e.pgerror
