@@ -5,12 +5,14 @@ import credentials as creds
 
 postgres = ""
 
-#postgres = True #comment this line for mysql, uncomment for psql
+postgres = True #comment this line for mysql, uncomment for psql
 
 if postgres:
+  print "\n\n****************POSTGRES*****************"
   import psqlDB
   db = psqlDB.Psql()
 else:
+  print "\n\n******************MYSQL******************"
   import mysqlDB
   db = mysqlDB.MYsql()
 

@@ -87,7 +87,7 @@ class MYsql:
         data = ""
       cur.close()
       return {'success':True, 'data':data}
-    except psycopg2.Error as e:
+    except MySQLdb.Error as e:
       f.close()
       conn.commit()
       cur.close()
@@ -162,7 +162,7 @@ class MYsql:
       conn.commit()
       cur.close()
       return 1
-    except psycopg2.Error as e:
+    except MySQLdb.Error as e:
       conn.commit()
       cur.close()
       return e.pgerror
@@ -176,7 +176,7 @@ class MYsql:
         conn.commit()
         cur.close()
         return 1
-    except psycopg2.Error as e:
+    except MySQLdb.Error as e:
       conn.commit()
       cur.close()
       return e.pgerror
@@ -190,7 +190,7 @@ class MYsql:
         conn.commit()
         cur.close()
         return 1
-    except psycopg2.Error as e:
+    except MySQLdb.Error as e:
       conn.commit()
       cur.close()
       return e.pgerror
