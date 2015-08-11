@@ -8,10 +8,6 @@ NOTES
 This module dynamically builds a table to show all the rows in a
 table including column names.
 
-It is based on David's DBstructure.py
-
-Currently breaks when there are no rows to render
-
 """
 
 # reorganizes row list for a column-oriented view, e.g.
