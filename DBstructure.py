@@ -37,7 +37,7 @@ def show_db_structure(user_info):
     , title="Encoding", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
   collation_col = urwid.LineBox( 
       urwid.Text(db_info[2])
-    , title="Encoding")
+    , title="Collation")
 
   #widgets for the database tables info table
   table_names = urwid.LineBox( urwid.Pile(table_names_list)
