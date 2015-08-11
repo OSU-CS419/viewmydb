@@ -130,6 +130,19 @@ class Psql:
       cur.close()
       return -1
 
+  def gettableinfo(self, conn, tablename):
+    cur = conn.cursor()
+    try:
+      cur.execute("""SELECT column_name, data_type, character_maximum_length, is_nullable, column_default
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE table_name=(%s);""", (tablename,))
+      data = cur.fetchall()
+      cur.close()
+      return data
+    except:
+      cur.close()
+      return -1
+
   def truncate_table(self, conn, tablename):
     cur = conn.cursor()
     try:

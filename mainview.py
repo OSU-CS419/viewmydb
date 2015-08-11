@@ -4,11 +4,11 @@ import urwid
 import DBstructure
 import DBcreatetable
 import runsql
+import TableStructure
 import TableBrowse
 import TableEdit
 import TableDrop
 import TableTruncate
-
 
 
 """
@@ -105,10 +105,12 @@ def show_main_view(frame, body, user_info):
       ('fixed', (len(drop_text) + 4), table_drop_btn)
     ]), left=2, right=2), 'topmenu')
 
+
+    db_table_structure_btn = urwid.AttrWrap( urwid.Button(u"Structure", leftcol_btn_press_table_structure, button.get_label()), 'btnf', 'btn')
     db_table_browse_btn = urwid.AttrWrap( urwid.Button(u"Browse", leftcol_btn_press_table_browse, button.get_label()), 'btnf', 'btn')
     db_table_edit_btn = urwid.AttrWrap( urwid.Button(u"Edit", leftcol_btn_press_table_edit, button.get_label()), 'btnf', 'btn')
     main_top.original_widget = urwid.Columns([
-      ('fixed', 13, db_structure_button),
+      ('fixed', 13, db_table_structure_btn),
       ('fixed', 3, urwid.Text(u"   ")),
       ('fixed', 8, db_table_edit_btn),
       ('fixed', 3, urwid.Text(u"  ")),
@@ -126,13 +128,16 @@ def show_main_view(frame, body, user_info):
       main_body
     ])
 
-    main_body.original_widget = DBstructure.show_db_structure(user_info)
+    main_body.original_widget = TableStructure.show_table_structure(user_info, tablename)
     selected.set_text([u" Selected Table: ", button.get_label()])
+
+  #signal handler for the table 'structure' button
+  def leftcol_btn_press_table_structure(button, tablename):
+    main_body.original_widget = TableStructure.show_table_structure(user_info, tablename)
 
   #signal handler for the table 'browse' button
   def leftcol_btn_press_table_browse(button, tablename):
     main_body.original_widget = TableBrowse.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename))
-    selected.set_text([u" Selected Table: ", tablename])
 
   # signal handler for the table 'edit' button
   def leftcol_btn_press_table_edit(button, tablename):
