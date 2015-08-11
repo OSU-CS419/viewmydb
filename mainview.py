@@ -105,7 +105,6 @@ def show_main_view(frame, body, user_info):
       ('fixed', (len(drop_text) + 4), table_drop_btn)
     ]), left=2, right=2), 'topmenu')
 
-
     db_table_structure_btn = urwid.AttrWrap( urwid.Button(u"Structure", leftcol_btn_press_table_structure, button.get_label()), 'btnf', 'btn')
     db_table_browse_btn = urwid.AttrWrap( urwid.Button(u"Browse", leftcol_btn_press_table_browse, button.get_label()), 'btnf', 'btn')
     db_table_edit_btn = urwid.AttrWrap( urwid.Button(u"Edit", leftcol_btn_press_table_edit, button.get_label()), 'btnf', 'btn')
