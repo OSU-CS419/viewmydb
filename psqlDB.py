@@ -89,17 +89,23 @@ class Psql:
 
   # takes psycopg2 cursor object and text string of query to run
   # returns 1 on success and error message on failure
-  def runquery(self, conn, text):
+  def runquery(self, conn, text, select):
     cur = conn.cursor()
     try:
       cur.execute(text)
       conn.commit()
+      if select:
+        data = cur.fetchall()
+      else:
+        data = ""
       cur.close()
-      return 1
+      return {'success':True, 'data':data}
     except psycopg2.Error as e:
+      print>>f, e
+      f.close()
       conn.commit()
       cur.close()
-      return e.pgerror
+      return {'success':False, 'data':e.pgerror}
 
   def getdbinfo(self, conn, name):
     cur = conn.cursor()
