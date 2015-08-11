@@ -58,6 +58,10 @@ else:
   table_info = db.getdb_tableinfo(conn)
   print table_info
 
+  # get table info
+  table_stat_info = db.gettableinfo(conn, 'cats')
+  print table_stat_info
+
   print "-------------------------------------------"
 
 conn.close()
