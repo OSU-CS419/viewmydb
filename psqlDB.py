@@ -138,9 +138,10 @@ class Psql:
       conn.commit()
       cur.close()
       return 1
-    except:
+    except psycopg2.Error as e:
+      conn.commit()
       cur.close()
-      return -1
+      return e.pgerror
 
   def drop_table(self, conn, tablename):
     cur = conn.cursor()
@@ -150,9 +151,10 @@ class Psql:
         conn.commit()
         cur.close()
         return 1
-    except:
-        cur.close()
-        return -1
+    except psycopg2.Error as e:
+      conn.commit()
+      cur.close()
+      return e.pgerror
 
   def rename_table(self, conn, tablename, newname):
     cur = conn.cursor()

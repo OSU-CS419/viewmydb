@@ -6,6 +6,9 @@ import DBcreatetable
 import runsql
 import TableBrowse
 import TableEdit
+import TableDrop
+import TableTruncate
+
 
 
 """
@@ -95,7 +98,7 @@ def show_main_view(frame, body, user_info):
     truncate_text = "Truncate '" + tablename + "'"
     drop_text = "Drop '" + tablename + "'"
     table_truncate_btn = urwid.AttrWrap( urwid.Button(truncate_text, btn_press_table_truncate, button), 'btnf', 'btn')
-    table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text, btn_press_table_drop, button.get_label()), 'btnf', 'btn')
+    table_drop_btn = urwid.AttrWrap( urwid.Button(drop_text, btn_press_table_drop, button), 'btnf', 'btn')
     secondary_top.original_widget = urwid.AttrWrap(urwid.Padding( urwid.Columns([
       ('fixed', (len(truncate_text) + 4), table_truncate_btn),
       ('fixed', 3, urwid.Text(u"  ")),
@@ -137,16 +140,11 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for table 'truncate' button
   def btn_press_table_truncate(button, tablebutton):
-    # execute the truncate query
-    user_info.db_obj.truncate_table(user_info.db_conn, tablebutton.get_label())
-    # return to table view
-    leftcol_btn_press_table(tablebutton)
+    main_body.original_widget = TableTruncate.show_table_trunc(frame, user_info, leftcol_btn_press_table, tablebutton)
 
-  def btn_press_table_drop(button, tablename):
-    # execute the drop query
-    user_info.db_obj.drop_table(user_info.db_conn, tablename)
-    # return to db view
-    leftcol_btn_press_db(db_button)
+  #signal handler for table 'drop' button
+  def btn_press_table_drop(button, tablebutton):
+    main_body.original_widget = TableDrop.show_table_drop(frame, body, user_info,leftcol_btn_press_table, tablebutton)
 
   #store database name that user is connected to
   db_name = user_info.db_name
