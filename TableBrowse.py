@@ -40,8 +40,13 @@ def showTables(colnames, rowdata):
       mypile = urwid.Pile([			# a blank widget to fill up some space
       urwid.Text(u""),
     ])
+
     # make a linebox with the Pile and the columnname
-    mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))
+    if i == len(colnames) - 1:
+      mylinebox = (urwid.LineBox((mypile), title=colnames[i]))
+    else:
+      mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))  
+
     columns.append(mylinebox)			# append the linebox to the list of columns
 
   #signal handler for the more button
@@ -53,8 +58,15 @@ def showTables(colnames, rowdata):
   more_btn = urwid.AttrWrap( urwid.Button(u"More", more_btn_press), 'btnf', 'btn')
   more_btn = urwid.Padding(more_btn, width=8)
 
-  structure_view = urwid.Padding(urwid.Pile([urwid.Columns(columns),more_btn]), left=2, right=2)
-  structure_view = urwid.WidgetPlaceholder(structure_view)
+  text_1 = urwid.Text(u"View table data below. If the columns or column names are not rendering correctly, then make your terminal wider.")
+
+  structure_view = urwid.WidgetPlaceholder( urwid.Padding( urwid.Pile([
+      urwid.Divider(),
+      text_1,
+      urwid.Divider(),
+      urwid.Columns(columns),
+      more_btn
+    ]), left=2, right=2))
 
   #return the widget created that holds all the structure data
   return structure_view
