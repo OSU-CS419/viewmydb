@@ -60,7 +60,7 @@ def show_table_structure(user_info, tablename):
   defaults = urwid.LineBox( urwid.Pile(table_default)
     , title="Default")
 
-  text_1 = urwid.Text(u"Here is the table structure information. If the table does not look alligned, then please make your terminal wider.")
+  text_1 = urwid.Text(u"Here is the table structure information. If the table does not look aligned, then please make your terminal wider.")
 
   #main widget for view
   structure_view = urwid.Padding( urwid.Pile( [
