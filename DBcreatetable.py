@@ -193,9 +193,9 @@ def second_createtable(frame, body, main_body, user_info, table_info):
     table_info.query_string += '\n);'
     
     #run query
-    query_status = user_info.db_obj.runquery(user_info.db_conn, table_info.query_string)
+    query_status = user_info.db_obj.runquery(user_info.db_conn, table_info.query_string, False)
 
-    if query_status == 1:
+    if query_status['success']:
       #query was successful, show success message and change view
       frame.footer = urwid.AttrWrap( urwid.Text(u" Table created successfully"), 'header')
 
@@ -203,7 +203,7 @@ def second_createtable(frame, body, main_body, user_info, table_info):
     else: 
       #query failed, show error message
       error_box.original_widget = urwid.AttrWrap( urwid.Text(
-        [u"Query Failed. Select 'Try Again' below to re-enter attribute information, or 'Create Table' above to start over.\n\n", query_status, "\nQUERY:  ", table_info.query_string]), 'error')
+        [u"Query Failed. Select 'Try Again' below to re-enter attribute information, or 'Create Table' above to start over.\n\n", query_status['data'], "\nQUERY:  ", table_info.query_string]), 'error')
 
       #if attributes = 1, next button will still be there
       if table_info.table_fields == 1:
