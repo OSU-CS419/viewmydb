@@ -83,11 +83,13 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
     # delete the row
     query = "DELETE FROM " + tablename + " WHERE "
     for k, name in enumerate(colnames):
-      query += name
-      query += "="
-      query += str(row[k])
-      if (k != (len(colnames) - 1)):
-        query += " AND "
+      if str(row[k]) != "None":
+        if k != 0:
+          query += " AND "
+        query += name
+        query += "='"
+        query += (str(row[k]) + "'")
+
     print query
     #query_status = user_info.db_obj.runquery(user_info.db_conn, query_text, 0)
     # go back to the table view
