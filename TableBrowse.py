@@ -67,7 +67,7 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
 ################################################################################################################
     prepile = []
     for j in range (start, end):
-      prepile.append(urwid.Padding(urwid.Button((u"Del " + str(j)), row_delete_btn_press, rowdata[j]), width=11))
+      prepile.append(urwid.Padding(urwid.Button((u"Delete Row"), row_delete_btn_press, rowdata[j]), width=14))
 
     newpile = urwid.Pile(prepile)
     newlinebox = urwid.LineBox(newpile, title="Delete", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
