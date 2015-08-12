@@ -36,7 +36,7 @@ def splitTable(allrows):
 # takes a list of column names and a list of (list)rows
 
 #def showTables(colnames, rowdata):
-def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_info):
+def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_info, frame):
   location = Tracking()
   rows_length = len(rowdata)            # amount of total rows in data
   widget_lists = splitTable(rowdata)    # get a list of a list of widgets
@@ -63,12 +63,11 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
 
       columns.append(mylinebox)			# append the linebox to the list of columns
 
-
 # builds the Delete buttons in the first column
 ################################################################################################################
     prepile = []
     for j in range (start, end):
-      prepile.append(urwid.Button((u"Delete " + str(j)), row_delete_btn_press, rowdata[j]))
+      prepile.append(urwid.Padding(urwid.Button((u"Del " + str(j)), row_delete_btn_press, rowdata[j]), width=11))
 
     newpile = urwid.Pile(prepile)
     newlinebox = urwid.LineBox(newpile, title="Delete", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
@@ -89,11 +88,17 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
         query += name
         query += "='"
         query += (str(row[k]) + "'")
-    query += " LIMIT 1"
-    #print query
+    query += ";"
     query_status = user_info.db_obj.runquery(user_info.db_conn, query, 0)
-    # go back to the table view
-    tablefunction(tablebutton, tablename)
+    
+    if query_status['success']:
+      #show success message
+      frame.footer = urwid.AttrWrap( urwid.Text(u" Row deleted successfully"), 'header')
+      # go back to the table view
+      tablefunction(tablebutton, tablename)
+    else:
+      #show error message
+      error_msg.original_widget = urwid.AttrWrap( urwid.Text(query_status['data']), 'error')
 ####################################################################
 
   #signal handler for the more button
@@ -134,6 +139,8 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
 
   count = urwid.Text([u"Viewing rows ", str(location.start + 1), " - ", str(location.end)])
 
+  error_msg = urwid.AttrWrap(urwid.Text(u""), 'body')
+
   if rows_length < 15:
     #render just the data available
     table = generate_table(0, rows_length)
@@ -151,6 +158,7 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
       text_2,
       count,
       urwid.Divider(),
+      error_msg,
       table,
       urwid.Divider(),
       urwid.Columns([
