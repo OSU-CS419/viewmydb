@@ -78,6 +78,8 @@ def show_table_edit(frame, body, main_body, user_info, tablename):
     main_body.original_widget = show_table_edit(frame, body, main_body, user_info, tablename)
 
   def next_field(button):
+    frame.footer = urwid.AttrWrap( urwid.Text(""), 'body')
+    
     if edit_info.add_field == "":
       edit_info.add_field = "NULL"
 

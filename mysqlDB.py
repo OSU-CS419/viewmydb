@@ -30,7 +30,6 @@ class MYsql:
              'BASE TABLE' AND TABLE_SCHEMA = '""" + conn.ourdbname +  """';"""
       cur.execute(SQL)
       data = cur.fetchall()
-      #print data
       names = []
       for table in data:
         names.append(table[0])
