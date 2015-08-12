@@ -79,15 +79,12 @@ def show_table_edit(frame, body, main_body, user_info, tablename):
 
   def next_field(button):
     frame.footer = urwid.AttrWrap( urwid.Text(""), 'body')
-    
-    if edit_info.add_field == "":
-      edit_info.add_field = "NULL"
 
     field_copy = edit_info.add_field.upper()
 
-    if edit_info.add_field.isdigit():
-      edit_info.add_query_string += edit_info.add_field
-    elif field_copy == "DEFAULT":
+    if edit_info.add_field == "":
+      edit_info.add_query_string += "NULL"
+    elif edit_info.add_field.isdigit() or field_copy == "DEFAULT":
       edit_info.add_query_string += edit_info.add_field
     else:
       edit_info.add_query_string += "'" + edit_info.add_field + "'"
