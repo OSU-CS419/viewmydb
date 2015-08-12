@@ -89,11 +89,11 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
         query += name
         query += "='"
         query += (str(row[k]) + "'")
-
-    print query
-    #query_status = user_info.db_obj.runquery(user_info.db_conn, query_text, 0)
+    query += " LIMIT 1"
+    #print query
+    query_status = user_info.db_obj.runquery(user_info.db_conn, query, 0)
     # go back to the table view
-    #tablefunction(tablebutton, tablename)
+    tablefunction(tablebutton, tablename)
 ####################################################################
 
   #signal handler for the more button
