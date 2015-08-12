@@ -49,8 +49,12 @@ class MYsql:
       cur.execute(SQL)
       data = cur.fetchall()
       rows = []
-      for row in data:
-        rows.append(row)
+      for index, row in enumerate(data):
+        newrow = []
+        newrow.append(index)
+        for element in row:
+          newrow.append(element)
+        rows.append(newrow)
       cur.close()
       return rows
     except:
@@ -66,6 +70,7 @@ class MYsql:
       cur.execute(SQL)
       data = cur.fetchall()
       columns = []
+      columns.append("Index")
       for column in data:
         columns.append(column[0])
       cur.close()
