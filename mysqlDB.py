@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import MySQLdb
+from warnings import filterwarnings
+filterwarnings('ignore', category= MySQLdb.Warning)
 
 """
 NOTES
