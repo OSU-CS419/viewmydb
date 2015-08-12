@@ -150,11 +150,11 @@ def show_runsql(frame, body, user_info):
 
     if query_info.query_text != None:
       #convert string to all uppercase to search for select
-      query_info.query_text = query_info.query_text.upper()
+      query_copy = query_info.query_text.upper()
 
       #identify if query string is a select query
       select = False
-      if 'SELECT' in query_info.query_text:
+      if 'SELECT' in query_copy:
         select = True
       
       #run query
