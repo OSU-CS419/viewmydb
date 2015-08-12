@@ -14,24 +14,29 @@ class Tracking:
   def __init__(self):
     self.start = 0
     self.end = 15
+  
 
 # reorganizes row list for a column-oriented view, e.g.
 # returns a list of widget lists
 def splitTable(allrows):
   cols = []
   if allrows:
+    # for each column
     for i in range(0, len(allrows[0])):
-      col = []
+      col = [] # start a blank column
+      # for each row, add to a column
       for index, row in enumerate(allrows):
-        col.append(urwid.Text(str(row[i])))
-      cols.append(col)
+        col.append(urwid.Text(str(row[i]))) # add a text cell w/ the row's value from the current column
+      cols.append(col)  # add the column to the list of columns
 
   return cols
 
 # creates a widget consisting of a table of all data in the rows
 # with column headers
 # takes a list of column names and a list of (list)rows
-def showTables(colnames, rowdata):
+
+#def showTables(colnames, rowdata):
+def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_info):
   location = Tracking()
   rows_length = len(rowdata)            # amount of total rows in data
   widget_lists = splitTable(rowdata)    # get a list of a list of widgets
@@ -54,11 +59,40 @@ def showTables(colnames, rowdata):
       if i == len(colnames) - 1:
         mylinebox = (urwid.LineBox((mypile), title=colnames[i]))
       else:
-        mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))  
+        mylinebox = (urwid.LineBox((mypile), title=colnames[i], rline=' ', trcorner=u'\u2500', brcorner=u'\u2500'))
 
       columns.append(mylinebox)			# append the linebox to the list of columns
 
+
+# builds the Delete buttons in the first column
+################################################################################################################
+    prepile = []
+    for j in range (start, end):
+      prepile.append(urwid.Button((u"Delete " + str(j)), row_delete_btn_press, rowdata[j]))
+
+    newpile = urwid.Pile(prepile)
+    newlinebox = urwid.LineBox(newpile, title="Delete", rline=' ', trcorner=u'\u2500', brcorner=u'\u2500')
+    columns.insert(0, newlinebox)
+################################################################################################################
+
     return urwid.Columns(columns)
+
+# handles presses for the delete buttons
+####################################################################
+  def row_delete_btn_press(button, row):
+    # delete the row
+    query = "DELETE FROM " + tablename + " WHERE "
+    for k, name in enumerate(colnames):
+      query += name
+      query += "="
+      query += str(row[k])
+      if (k != (len(colnames) - 1)):
+        query += " AND "
+    print query
+    #query_status = user_info.db_obj.runquery(user_info.db_conn, query_text, 0)
+    # go back to the table view
+    #tablefunction(tablebutton, tablename)
+####################################################################
 
   #signal handler for the more button
   def more_btn_press(button):

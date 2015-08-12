@@ -136,7 +136,7 @@ def show_main_view(frame, body, user_info):
 
   #signal handler for the table 'browse' button
   def leftcol_btn_press_table_browse(button, tablename):
-    main_body.original_widget = TableBrowse.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename))
+    main_body.original_widget = TableBrowse.showTables(user_info.db_obj.getcolnames(user_info.db_conn, tablename), user_info.db_obj.allrows(user_info.db_conn, tablename), leftcol_btn_press_table_browse, button, tablename, user_info)
 
   # signal handler for the table 'edit' button
   def leftcol_btn_press_table_edit(button, tablename):
