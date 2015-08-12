@@ -88,10 +88,9 @@ class MYsql:
       cur.close()
       return {'success':True, 'data':data}
     except MySQLdb.Error as e:
-      f.close()
       conn.commit()
       cur.close()
-      return {'success':False, 'data':e.pgerror}
+      return {'success':False, 'data':e.args[1]}
 
   # gets information about the database
   def getdbinfo(self, conn, name):
