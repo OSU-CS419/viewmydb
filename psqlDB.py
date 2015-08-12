@@ -5,23 +5,9 @@ import psycopg2
 """
 NOTES
 -----
-psycopg returns tuples, which are hard to work with as they're unchangable,
-so they're converted into lists before they're returned.
-EDIT: the reason I first turned them into lists was that I was getting results
-like [('dbname1', ), ('dbname1', )]
-with an extra space afte the first element so I repackaged into lists to get
-rid of this empty item.
-Turns out this is just how python prints single element tuples. There's
-actually nothing there. I think I still like lists better anyway.
 
-psycopg documentation says:
-Never, never, NEVER use Python string concatenation (+) or string parameters
-interpolation (%) to pass variables to a SQL query string.
-Not even at gunpoint.
+This file contains the functions for the PostgreSQL implementation part of the code.
 
-I couldn't seem to make it work without concatenating a string for the query
-to execute. I can investigate that further later on, but for now I just wanted
-it to work.
 """
 
 class Psql:
