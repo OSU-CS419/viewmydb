@@ -51,7 +51,7 @@ class MYsql:
       rows = []
       for index, row in enumerate(data):
         newrow = []
-        newrow.append(index)
+#        newrow.append(index)
         for element in row:
           newrow.append(element)
         rows.append(newrow)
@@ -70,7 +70,7 @@ class MYsql:
       cur.execute(SQL)
       data = cur.fetchall()
       columns = []
-      columns.append("Index")
+#      columns.append("Index")
       for column in data:
         columns.append(column[0])
       cur.close()
