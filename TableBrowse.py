@@ -126,12 +126,12 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
 
   #more button to show more results
   #only show if results are greater than a certain amount
-  more_btn = urwid.AttrWrap( urwid.Button(u"More", more_btn_press), 'btnf', 'btn')
+  more_btn = urwid.AttrWrap( urwid.Button(u"Next", more_btn_press), 'btnf', 'btn')
   more_btn = urwid.Padding(more_btn, width=8)
 
   #less button to go back
-  less_btn = urwid.AttrWrap( urwid.Button(u"Less", less_btn_press), 'btnf', 'btn')
-  less_btn = urwid.Padding(less_btn, width=8)
+  less_btn = urwid.AttrWrap( urwid.Button(u"Previous", less_btn_press), 'btnf', 'btn')
+  less_btn = urwid.Padding(less_btn, width=12)
 
   text_1 = urwid.Text(u"View table data below. If the columns or column names are not rendering correctly, then make your terminal wider. The table displays data in pages of 15 rows, click the more or less button to cycle through the data.")
 
@@ -162,7 +162,7 @@ def showTables(colnames, rowdata, tablefunction, tablebutton, tablename, user_in
       table,
       urwid.Divider(),
       urwid.Columns([
-        ('fixed', 8, less_btn),
+        ('fixed', 12, less_btn),
         ('fixed', 3, urwid.Text(u"   ")),
         ('fixed', 8, more_btn)
       ])

@@ -99,12 +99,12 @@ def show_runsql(frame, body, user_info):
 
     #more button to show more results
     #only show if results are greater than a certain amount
-    more_btn = urwid.AttrWrap( urwid.Button(u"More", more_btn_press), 'btnf', 'btn')
+    more_btn = urwid.AttrWrap( urwid.Button(u"Next", more_btn_press), 'btnf', 'btn')
     more_btn = urwid.Padding(more_btn, width=8)
 
     #less button to go back
-    less_btn = urwid.AttrWrap( urwid.Button(u"Less", less_btn_press), 'btnf', 'btn')
-    less_btn = urwid.Padding(less_btn, width=8)
+    less_btn = urwid.AttrWrap( urwid.Button(u"Previous", less_btn_press), 'btnf', 'btn')
+    less_btn = urwid.Padding(less_btn, width=12)
 
     select_text_1 = urwid.Text(["The results from the following SELECT query are below.", "\n\nQUERY: ", text])
     select_text_2 = urwid.Text([u"Total Rows: ", str(row_length)])
@@ -130,7 +130,7 @@ def show_runsql(frame, body, user_info):
       table,
       blank,
       urwid.Columns([
-        ('fixed', 8, less_btn),
+        ('fixed', 12, less_btn),
         ('fixed', 3, urwid.Text(u"   ")),
         ('fixed', 8, more_btn)
       ])
