@@ -6,7 +6,7 @@ def readme():
 
 setup(
   name='viewmydb',
-  version='0.1.1',
+  version='0.1.2',
   description='Python terminal GUI for MySQL and PostgreSQL DBs.',
   classifiers=[
     'Development Status :: 4 - Beta',
