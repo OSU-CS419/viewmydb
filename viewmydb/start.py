@@ -2,7 +2,7 @@
 
 import urwid
 import urwid.curses_display
-import .loginview
+import loginview
 
 
 """
