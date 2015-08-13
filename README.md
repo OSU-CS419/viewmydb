@@ -11,9 +11,11 @@ By:
 
 #####Group 3 (David Adams, Adam Pedigo)
 
+
+
 Step 1: Install the program and dependencies
 
-Execute install.sh with the command:
+Execute install.sh with the command
 
 ```sh
 $  ./install.sh
@@ -21,23 +23,25 @@ $  ./install.sh
 
 This script executes the following commands:
 
-  * sudo apt-get update
-  * sudo apt-get install python-dev
-  * sudo apt-get install postgresql libpq-dev
-  * sudo apt-get install mysql-server libmysqlclient-dev
-  * sudo apt-get install python-pip
-  * sudo pip install viewmydb
+    * sudo apt-get update
+    * sudo apt-get install python-dev
+    * sudo apt-get install postgresql libpq-dev
+    * sudo apt-get install mysql-server libmysqlclient-dev
+    * sudo apt-get install python-pip
+    * sudo pip install viewmydb
 
 This will install the program and all required dependencies.
 
 Development and testing were performed in Ubuntu 14.04 LTS, but other operating systems may be supported, provided that the required dependencies can be installed.
+
+
 
 Step 2: Set up databases (if not already setup)
 
 MySQL:
 
 ```sh
-  $ mysql -uroot -p   // to execute the msyql shell
+$ mysql -uroot -p   // to execute the msyql shell
 ```
 ```sh
 mysql> CREATE DATABASE [new database name]; // to create a database to work with
@@ -52,9 +56,11 @@ $ sudo -u postgres -i  // to change to the postgres user role
 postgres~$ createdb [new database name];   // to create a database to work with
 ```
 
+
+
 Step 3: Use the program
 
-Start the program with the command:
+Start the program with the command
 
 ```sh
 $ viewmydb
