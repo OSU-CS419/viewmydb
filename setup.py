@@ -1,7 +1,7 @@
 from setuptools import setup
 
 def readme():
-  with open('README.md') as f:
+  with open('README.rst') as f:
     return f.read()
 
 setup(
@@ -15,7 +15,8 @@ setup(
     'Intended Audience :: Information Technology',
     'Natural Language :: English',
     'License :: OSI Approved :: MIT License',
-    'Operating System :: Unix'
+    'Operating System :: POSIX :: Linux',
+    'Topic :: Database :: Front-Ends'
   ],
   keywords=['mysql', 'postgresql', 'urwid', 'ncurses', 'curses'],
   url='http://github.com/OSU-CS419/viewmydb',
