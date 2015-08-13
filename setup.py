@@ -25,10 +25,12 @@ setup(
   scripts=['bin/viewmydb'],
   packages=['viewmydb'],
   install_requires=[
-      'urwid',
-      'psycopg2',
-      'MySQL-python'
-    ],
+    'urwid',
+    'psycopg2',
+    'MySQL-python'
+  ],
+  test_suite='nose.collector',
+  tests_require=['nose'],
   include_package_data=True,
   zip_safe=False
 )
