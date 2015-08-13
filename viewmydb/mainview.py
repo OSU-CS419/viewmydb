@@ -25,7 +25,7 @@ This is the code that sets up and displays the main dashboard view for the progr
 def show_main_view(frame, body, user_info):
   blank = urwid.Divider()
 
-  text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that databse. The program is written in python and is an ncurses based command line tool. Anything within < > brackets is a selectable button. If the tables do not look right, please make the console window wider.")
+  text_instructions = (u"This program allows you to connect to a PostgreSQL or MySQL database and then perform operations on that database. The program is written in python and is an ncurses based command line tool. Anything within < > brackets is a selectable button. If the tables do not look right, please make the console window wider.")
 
   #--------------------------------------------------------------------
   #This creates the widget for the top most bar
