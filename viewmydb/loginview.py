@@ -120,7 +120,7 @@ def create_main_view(user_info):
   body = urwid.AttrWrap(body, 'bg')
 
   #Setting up frame
-  frame_header = urwid.Padding( urwid.Text(u"Welcome to our CS419 project! 'q' exits the pogram. Use up and down arrow to navigate."), left=1, right=1)
+  frame_header = urwid.Padding( urwid.Text(u"Welcome to viewmydb! 'q' exits the pogram. Use the keyboard arrows to navigate."), left=1, right=1)
   frame_header = urwid.AttrWrap(frame_header, 'header')
   frame = urwid.Frame(body=body, header=frame_header)
 
