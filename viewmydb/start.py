@@ -3,7 +3,8 @@
 import urwid
 import urwid.curses_display
 import loginview
-
+import warnings
+warnings.filterwarnings("ignore")
 
 """
 NOTES
