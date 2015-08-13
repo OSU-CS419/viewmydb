@@ -19,8 +19,7 @@ sudo apt-get install python-pip<br>
 sudo pip install viewmydb<br>
 
 This will install the program and all required dependencies.<br>
-Development and testing were performed in Ubuntu 14.04 LTS, but other operating systems may be supported,<br>
-provided that the required dependencies can be installed.<br>
+Development and testing were performed in Ubuntu 14.04 LTS, but other operating systems may be supported, provided that the required dependencies can be installed.<br>
 
 Step 2: Set up databases (if not already setup)<br>
   MySQL:<br>
