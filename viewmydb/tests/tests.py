@@ -5,29 +5,33 @@ import unittest
 """
 NOTES
 -----
-Moving test in backend.py to a separate file containing tests
-When the module backend.py was being implemented, it would run the
-tests since they aren't in a function or anything, so that's why 
-I'm moving them here.
+In order to run the tests, you have to enter in your login credentials
+for either MySQL or PostgreSQL.
+Then, you can run either one of the following commands from the root directory
+$ sudo python setup.py test
+$ nosetests
 
-can just run 'python tests.py' to run this file
+You can enter in manual test data below in the TestInfo class
 
 """
 
 # add your credentials to credentials.py in order to run tests
 import credentials as creds
 
-
-class LoginCreds:
+# You can edit variable info to test for using this class
+class TestInfo:
   def __init__(self):
     self.uname = ""
     self.dbname = ""
     self.pw = ""
+    self.query_test = "SELECT * FROM moretest;"
+    self.table_test = "cats"
 
+# Main test class
 class TestDB(unittest.TestCase):
 
   def setUp(self):
-    login = LoginCreds()
+    login = TestInfo()
     
     postgres = True #make True for psql and False for mysql
 
@@ -46,6 +50,7 @@ class TestDB(unittest.TestCase):
       login.dbname = creds.mysqldbname
       login.pw = creds.mysqlpass    
 
+    self.login = login
     self.conn = self.db.connectdb(login.dbname, login.uname, login.pw)
     self.tablenames = self.db.gettables(self.conn)
 
@@ -69,17 +74,17 @@ class TestDB(unittest.TestCase):
     self.assertNotEqual(self.db.allrows(self.conn, self.tablenames[0]), -1, "Could not get table rows")
 
   def test_runquery(self):
-    data = self.db.runquery(self.conn, "select * from moretest;", True)
+    data = self.db.runquery(self.conn, self.login.query_test, True)
     self.assertTrue(data['success'], "Could not run query")
   
   def test_dbinfo(self):
-    self.assertNotEqual(self.db.getdbinfo(self.conn, "test1"), -1, "Could not get db info")
+    self.assertNotEqual(self.db.getdbinfo(self.conn, self.login.dbname), -1, "Could not get db info")
 
   def test_dbtableinfo(self):
     self.assertNotEqual(self.db.getdb_tableinfo(self.conn), -1, "Could not get db table info")
 
   def test_tableinfo(self):
-    self.assertNotEqual(self.db.gettableinfo(self.conn, "cats"), -1, "Could not get table info")
+    self.assertNotEqual(self.db.gettableinfo(self.conn, self.login.table_test), -1, "Could not get table info")
 
 if __name__ == '__main__':
   unittest.main()
