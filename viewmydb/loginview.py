@@ -29,14 +29,14 @@ def create_main_view(user_info):
       import psqlDB as sqlDB	# for PostgreSQL
       user_info.db_obj = sqlDB.Psql()
 
-    if (user_info.db_name and user_info.db_uname and user_info.db_pw):
+    if (user_info.db_name and user_info.db_uname):
       # connect to the db
       user_info.db_conn = user_info.db_obj.connectdb(user_info.db_name, user_info.db_uname, user_info.db_pw)
 
       # if connection error returned
       if user_info.db_conn == -1:
         db_error_box.original_widget = urwid.AttrMap( urwid.Text
-        (u"Incorrect username, database name, or password. Please try again"),
+        (u" Incorrect username, database name, or password.\n Please try again"),
         'error', 'error')
 
       # if good connection returned
@@ -46,7 +46,7 @@ def create_main_view(user_info):
 
     else:
       db_error_box.original_widget = urwid.AttrMap( urwid.Text
-        (u"Please enter your username, database name, and password"),
+        (u" Please enter your username and database name"),
         'error', 'error')
 
   #signal handler for radio buttons, stores input information from user
@@ -101,20 +101,20 @@ def create_main_view(user_info):
 
   #This is the pile widget that holds all of the main body widgets
   body = urwid.WidgetPlaceholder( urwid.Filler( urwid.Padding(      
-      urwid.Pile([
-        text_mainbody_1,
-        blank, 
-        urwid.Padding( urwid.Pile([psql_radio, mysql_radio]), width=14, left=5),
-        blank,
-        text_mainbody_2,
-        blank,
-        urwid.Padding( urwid.Pile([db_uname_edit, db_name_edit, db_pw_edit]), left=5, width=45),
-        blank,
-        urwid.Padding(db_connect_btn, left=5, width=11),
-	blank,
-	urwid.Padding(db_error_box, left=5, width=50)
-      ]), left=5, right=5),
-    valign='top', top=3))
+    urwid.Pile([
+      text_mainbody_1,
+      blank, 
+      urwid.Padding( urwid.Pile([psql_radio, mysql_radio]), width=14, left=5),
+      blank,
+      text_mainbody_2,
+      blank,
+      urwid.Padding( urwid.Pile([db_uname_edit, db_name_edit, db_pw_edit]), left=5, width=45),
+      blank,
+      urwid.Padding(db_connect_btn, left=5, width=11),
+      blank,
+      urwid.Padding(db_error_box, left=5, width=50)
+    ]), left=5, right=5),
+  valign='top', top=3))
   
   #adding color styling to the body widget
   body = urwid.AttrWrap(body, 'bg')
