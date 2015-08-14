@@ -75,3 +75,15 @@ Click 'Connect'
 Navigate tables using the buttons along the left side of the screen.
   
 Navigate functions within tables using the buttons along the top of the screen.
+
+#####Additional Support Available
+
+See:
+
+    docs/Getting-Started-Tuturial.pdf
+
+and:
+
+    docs/Install-Run-Dependencies.pdf
+
+for more information.
